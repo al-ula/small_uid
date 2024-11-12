@@ -1,4 +1,6 @@
 # Small UID
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid?ref=badge_shield)
+
 
 ⚠️ _This project is in experimental phase, the API may may be subject to change._
 
@@ -65,3 +67,6 @@ let smalluid2 = SmallUid::try_from("GSntNvOw6n8".to_string()).unwrap();
 let smalluid = SmallUid::new();
 let uid_string = smalluid.to_string();
 ```
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid?ref=badge_large)
