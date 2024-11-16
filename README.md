@@ -49,19 +49,3 @@ The random number suffix still guarantees a decent amount of uniqueness when man
 Because of the sequential timestamp, _Small UIDs_ are naturally sorted chronologically. It **improves indexing** when inserting values in databases, new ids being appended to the end of the table without reshuffling existing data (read more [in this article](https://www.codeproject.com/Articles/388157/GUIDs-as-fast-primary-keys-under-multiple-database)).
 
 However, **sort order within the same millisecond is not guaranteed** because of the random bits suffix.
-
-## Examples of usage
-
-### Generating Small UIDs
-
-```rust
-let smalluid1 = SmallUid::new();
-let smalluid2 = SmallUid::try_from("GSntNvOw6n8".to_string()).unwrap();
-```
-
-### Converting Small UIDs
-
-```rust
-let smalluid = SmallUid::new();
-let uid_string = smalluid.to_string();
-```
