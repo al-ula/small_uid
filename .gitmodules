@@ -1,3 +1,6 @@
 [submodule "rust"]
 	path = rust
 	url = git@github.com:al-ula/small_uid-rs
+[submodule "typescript"]
+	path = typescript
+	url = git@github.com:al-ula/small_uid-ts
