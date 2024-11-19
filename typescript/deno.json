@@ -1,6 +1,6 @@
 {
   "name": "@al-ula/small-uid",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "exports": "./mod.ts",
   "tasks": {
     "dev": "deno test --watch mod.ts",
@@ -15,6 +15,7 @@
     ".github",
     ".npmignore",
     "package-lock.json",
+    "pnpm-lock.yaml",
     "*lock*"
   ],
   "publish": {
@@ -29,14 +30,5 @@
     "exclude": [
       "dist"
     ]
-  },
-  "compilerOptions": {
-    "target": "es2022",
-    "module": "es2022",
-    "allowImportingTsExtensions": true,
-    "isolatedModules": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true
   }
 }
