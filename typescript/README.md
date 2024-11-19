@@ -1,10 +1,10 @@
 # Small UID
 
-[![GitHub License](https://img.shields.io/github/license/al-ula/small_uid-ts)](https://github.com/al-ula/small_uid-ts/blob/master/LICENSE-APACHE)
-[![GitHub License](https://img.shields.io/badge/license-MIT-limegreen)](https://github.com/al-ula/small_uid-ts/blob/master/LICENSE-MIT)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/al-ula/small_uid-ts/deno.yml?branch=master)
+[![GitHub License](https://img.shields.io/github/license/al-ula/small_uid)](https://github.com/al-ula/small_uid/typescript/blob/master/LICENSE-APACHE)
+[![GitHub License](https://img.shields.io/badge/license-MIT-limegreen)](https://github.com/al-ula/small_uid/typescript/blob/master/LICENSE-MIT)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/al-ula/small_uid/deno.yml?branch=master)
 [![JSR](https://jsr.io/badges/@al-ula/small-uid)](https://jsr.io/@al-ula/small-uid)
-[![Coverage Status](https://coveralls.io/repos/github/al-ula/small_uid-ts/badge.svg?branch=master)](https://coveralls.io/github/al-ula/small_uid-ts?branch=master)
+<!-- [![Coverage Status](https://coveralls.io/repos/github/al-ula/small_uid-ts/badge.svg?branch=master)](https://coveralls.io/github/al-ula/small_uid-ts?branch=master) -->
 
 This project is a TypeScript implementation of
 [Small UID](https://github.com/al-ula/small_uid). A small, url-safe,
@@ -81,7 +81,7 @@ the random bits suffix.
 ```typescript
 import { SmallUid } from "@al-ula/small-uid";
 
-const uid = new SmallUid();
+const uid = SmallUid.gen();
 console.log(uid.string); // prints the base64url encoded string
 console.log(uid.value); // prints the underlying integer value
 ```
