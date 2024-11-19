@@ -4,6 +4,8 @@
 [![GitHub License](https://img.shields.io/badge/license-MIT-limegreen)](https://github.com/al-ula/small_uid/typescript/blob/master/LICENSE-MIT)
 ![Crates.io Version](https://img.shields.io/crates/v/small_uid)
 [![JSR](https://jsr.io/badges/@al-ula/small-uid)](https://jsr.io/@al-ula/small-uid)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid?ref=badge_shield&issueType=security)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid?ref=badge_shield&issueType=license)
 
 _Small UID_ is a small, url-safe, user-friendly unique, lexicographically
 sortable id generator.
