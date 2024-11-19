@@ -1,0 +1,9 @@
+.github
+.idea
+scripts
+test*
+mod_*
+deno*
+tsconfig.json
+LICENSE*
+pnpm-lock.yaml

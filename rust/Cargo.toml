@@ -1,0 +1,28 @@
+[package]
+name = "small_uid"
+authors = ["Isa Al-Ula"]
+version = "0.2.2"
+edition = "2021"
+readme = "README.md"
+description = "A 64 bit lexicographically sortable unique identifier implementation"
+keywords = ["small", "ulid", "uuid", "sortable", "identifier"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/al-ula/small_uid-rs"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+base64-url = "3.0.0"
+rand = "0.9.0-alpha.2"
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+serde = { version = "1.0.210", features = ["derive"] }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+getrandom = { version = "0.2.0", features = ["js"] }
+
+[target.'cfg(target_arch = "wasm32")'.dependencies.rand]
+version = "0.9.0-alpha.2"
+default-features = false
+features = ["std", "std_rng", "getrandom"]

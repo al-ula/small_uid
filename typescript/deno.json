@@ -1,0 +1,42 @@
+{
+  "name": "@al-ula/small-uid",
+  "version": "0.1.2",
+  "exports": "./mod.ts",
+  "tasks": {
+    "dev": "deno test --watch mod.ts",
+    "build": "deno run -A scripts/build.ts"
+  },
+  "license": "MIT and Apache-2.0",
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1",
+    "@std/expect": "jsr:@std/expect@^1.0.8"
+  },
+  "exclude": [
+    ".github",
+    ".npmignore",
+    "package-lock.json",
+    "*lock*"
+  ],
+  "publish": {
+    "exclude": []
+  },
+  "fmt": {
+    "exclude": [
+      "dist"
+    ]
+  },
+  "lint": {
+    "exclude": [
+      "dist"
+    ]
+  },
+  "compilerOptions": {
+    "target": "es2022",
+    "module": "es2022",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true
+  }
+}
