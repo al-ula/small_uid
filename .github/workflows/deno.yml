@@ -3,7 +3,7 @@ name: Deno
 on: 
   push:
     branches:
-      - main
+      - master
     tags:
       - "*"
 
