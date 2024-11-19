@@ -12,8 +12,24 @@
     "guid"
   ],
   "type": "module",
-  "module": "dist/mod.js",
-  "main": "dist/mod.cjs",
+  "jsdelivr": "./dist/small-uid.min.js",
+  "unpkg": "./dist/small-uid.min.js",
+  "browser": "./dist/small-uid.min.js",
+  "main": "./dist/mod.cjs",
+  "module": "./dist/mod.js",
+  "types": "./dist/mod.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/mod.d.ts",
+        "default": "./dist/mod.js"
+      },
+      "require": {
+        "types": "./dist/mod.d.cts",
+        "default": "./dist/mod.cjs"
+      }
+    }
+  },
   "scripts": {
   },
   "license": "(Apache-2.0 OR MIT)",

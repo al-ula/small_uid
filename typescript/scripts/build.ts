@@ -4,7 +4,6 @@ function buildFull() {
   return build({
     entry: ["mod.ts"],
     splitting: false,
-    sourcemap: true,
     clean: true,
     target: "es2022",
     format: ["cjs", "esm"],
@@ -15,9 +14,9 @@ function buildFull() {
 
 function buildMin() {
   return build({
-    entry: ["mod.ts"],
-    splitting: false,
-    sourcemap: false,
+    entry: {
+      "small-uid": "mod.ts",
+    },
     clean: false,
     target: "es2022",
     format: ["cjs", "esm"],
@@ -25,9 +24,15 @@ function buildMin() {
     dts: false,
     minify: true,
     outExtension({ format }) {
-      return {
-        js: `.${format}.min.js`,
-      };
+      if (format === "cjs") {
+        return {
+          js: `.min.cjs`,
+        };
+      } else {
+        return {
+          js: `.min.js`,
+        };
+      }
     },
   });
 }

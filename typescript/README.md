@@ -2,22 +2,26 @@
 
 [![GitHub License](https://img.shields.io/github/license/al-ula/small_uid)](https://github.com/al-ula/small_uid/typescript/blob/master/LICENSE-APACHE)
 [![GitHub License](https://img.shields.io/badge/license-MIT-limegreen)](https://github.com/al-ula/small_uid/typescript/blob/master/LICENSE-MIT)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/al-ula/small_uid/deno.yml?branch=master)
+![GitHub branch check runs](https://img.shields.io/github/check-runs/al-ula/small_uid/master)
+![Crates.io Version](https://img.shields.io/crates/v/small_uid)
 [![JSR](https://jsr.io/badges/@al-ula/small-uid)](https://jsr.io/@al-ula/small-uid)
+![NPM Version](https://img.shields.io/npm/v/small-uid)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid?ref=badge_shield&issueType=security)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid?ref=badge_shield&issueType=license)
 
-<!-- [![Coverage Status](https://coveralls.io/repos/github/al-ula/small_uid-ts/badge.svg?branch=master)](https://coveralls.io/github/al-ula/small_uid-ts?branch=master) -->
+_Small UID_ is a small, url-safe, user-friendly unique, lexicographically
+sortable id generator.
 
-This project is a TypeScript implementation of
-[Small UID](https://github.com/al-ula/small_uid). A small, url-safe,
-user-friendly unique, lexicographically sortable id generator.
+UUIDs are frequently used as database _Primary Key_ in software development.
+However, they aren't the best choice mainly due to their random sorting and the
+resulting fragmentation in databases indexes.
 
 UUIDs are frequently used as database _Primary Key_ in software development.
 However, they aren't the best choice mainly due to their random sorting and the
 resulting fragmentation in databases indexes.
 
 Using [ULIDs](https://github.com/ulid/spec) is generally a very good
-alternative, solving most of UUID flaws. But, ULID's u128 bit length is too long
-for many databases if you want to use its sortable feature.
+alternative, solving most of UUID flaws.
 
 Twitter's Snowflake is another option if you want to generate roughly sortable
 uid. But, Snowflake is not using random numbers instead it used machine id to
@@ -25,7 +29,7 @@ generate the uid. It's a good choice if you integrate it into a distributed
 systems and doesn't really need randomness.
 
 **Small UIDs** are also an ideal alternative **when you do not need as much
-uniqueness** and want **shorter " user-friendly" encoded strings**.
+uniqueness** and want **shorter "user-friendly" encoded strings**.
 
 ## Introduction
 
@@ -34,7 +38,7 @@ efficient database _Primary Key_:
 
 - Half smaller than UUID / ULID (64-bit)
 - Lexicographically sortable
-- Encoded as a short user-friendly and URL-safe base-64 string (`a-zA-Z0-9_-`)
+- Encodable as a short user-friendly and URL-safe base-64 string (`a-zA-Z0-9_-`)
 - User-friendly strings are generated in a way to be always very different (no
   shared prefix due to similar timestamps)
 
@@ -45,8 +49,7 @@ efficient database _Primary Key_:
 | Random bits               |         20          |          80           |    122    |
 | Collision odds &ast;&ast; |  1,024 _/ ms&ast;_  | 1.099e+12 _/ ms&ast;_ | 2.305e+18 |
 
-&ast; _theoretical number of generated uids before the first expected
-collision._\
+&ast; _theorical number of generated uids before the first expected collision._\
 &ast;&ast; _the uid includes a timestamp, so collisions may occur only during
 the same millisecond._\
 &ast;&ast;&ast; _monotonic sort order, but random order when generated at the
@@ -75,9 +78,33 @@ new ids being appended to the end of the table without reshuffling existing data
 However, **sort order within the same millisecond is not guaranteed** because of
 the random bits suffix.
 
-## Examples of usage
+This project is loose reimplementation of
+[Small-UID](https://github.com/Mediagone/small-uid) by
+[Mediagone](https://github.com/Mediagone) with the only difference is the string
+encoding for this one is base64-url instead of base62 for enabling wider
+usecases.
 
-### Generating Small UIDs
+## Example
+
+### Rust
+
+#### Generating Small UIDs
+
+```rust
+let smalluid1 = SmallUid::new();
+let smalluid2 = SmallUid::try_from("GSntNvOw6n8".to_string()).unwrap();
+```
+
+#### Converting Small UIDs
+
+```rust
+let smalluid = SmallUid::new();
+let uid_string = smalluid.to_string();
+```
+
+### Typescript
+
+#### Generating Small UIDs
 
 ```typescript
 import { SmallUid } from "@al-ula/small-uid";
@@ -87,7 +114,7 @@ console.log(uid.string); // prints the base64url encoded string
 console.log(uid.value); // prints the underlying integer value
 ```
 
-### Generating Small UIDs from a 64-bit integer
+#### Generating Small UIDs from a 64-bit integer
 
 ```typescript
 const smallUidValue: bigint = 0x123456789abcdefn;
@@ -96,7 +123,7 @@ console.log(uid.string); // prints the base64url encoded string
 console.log(uid.value); // prints the underlying numeric value
 ```
 
-### Generating Small UIDs from a string
+#### Generating Small UIDs from a string
 
 ```typescript
 const smallUidString = "XxXxXxXxXxX";

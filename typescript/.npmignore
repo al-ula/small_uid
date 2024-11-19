@@ -2,8 +2,8 @@
 .idea
 scripts
 test*
-mod_*
 deno*
+mod_*
 tsconfig.json
 LICENSE*
 pnpm-lock.yaml
