@@ -1,14 +1,20 @@
 # Small UID
 
-[![Crates.io License (version)](https://img.shields.io/crates/l/small_uid/0.2.2)](https://crates.io/crates/small_uid)
-[![Crates.io Total Downloads](https://img.shields.io/crates/d/small_uid)](https://crates.io/crates/small_uid)
+[![GitHub License](https://img.shields.io/github/license/al-ula/small_uid)](https://github.com/al-ula/small_uid/typescript/blob/master/LICENSE-APACHE)
+[![GitHub License](https://img.shields.io/badge/license-MIT-limegreen)](https://github.com/al-ula/small_uid/typescript/blob/master/LICENSE-MIT)
+![GitHub branch check runs](https://img.shields.io/github/check-runs/al-ula/small_uid/master)
+[![Crates.io Version](https://img.shields.io/crates/v/small_uid)](https://crates.io/crates/small_uid)
+[![JSR](https://jsr.io/badges/@al-ula/small-uid)](https://jsr.io/@al-ula/small-uid)
+[![NPM Version](https://img.shields.io/npm/v/small-uid)](https://www.npmjs.com/package/small-uid)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid?ref=badge_shield&issueType=security)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid?ref=badge_shield&issueType=license)
 
-⚠️ _This project is in experimental phase, the API may may be subject to
-change._
+_Small UID_ is a small, url-safe, user-friendly unique, lexicographically
+sortable id generator.
 
-This is a Rust implementation of [Small UIDs](https://github.com/al-ula/small_uid-rs),
-generating **unique identifiers** with **short strings** and lexicographically
-**sortable**. Check that repository for implementation in other languages.
+UUIDs are frequently used as database _Primary Key_ in software development.
+However, they aren't the best choice mainly due to their random sorting and the
+resulting fragmentation in databases indexes.
 
 UUIDs are frequently used as database _Primary Key_ in software development.
 However, they aren't the best choice mainly due to their random sorting and the
@@ -72,18 +78,56 @@ new ids being appended to the end of the table without reshuffling existing data
 However, **sort order within the same millisecond is not guaranteed** because of
 the random bits suffix.
 
-## Examples of usage
+This project is loose reimplementation of
+[Small-UID](https://github.com/Mediagone/small-uid) by
+[Mediagone](https://github.com/Mediagone) with the only difference is the string
+encoding for this one is base64-url instead of base62 for enabling wider
+usecases.
 
-### Generating Small UIDs
+## Example
+
+### Rust
+
+#### Generating Small UIDs
 
 ```rust
 let smalluid1 = SmallUid::new();
 let smalluid2 = SmallUid::try_from("GSntNvOw6n8".to_string()).unwrap();
 ```
 
-### Converting Small UIDs
+#### Converting Small UIDs
 
 ```rust
 let smalluid = SmallUid::new();
 let uid_string = smalluid.to_string();
+```
+
+### Typescript
+
+#### Generating Small UIDs
+
+```typescript
+import { SmallUid } from "@al-ula/small-uid";
+
+const uid = SmallUid.gen();
+console.log(uid.string); // prints the base64url encoded string
+console.log(uid.value); // prints the underlying integer value
+```
+
+#### Generating Small UIDs from a 64-bit integer
+
+```typescript
+const smallUidValue: bigint = 0x123456789abcdefn;
+const uid = new SmallUid(smallUidValue);
+console.log(uid.string); // prints the base64url encoded string
+console.log(uid.value); // prints the underlying numeric value
+```
+
+#### Generating Small UIDs from a string
+
+```typescript
+const smallUidString = "XxXxXxXxXxX";
+const uid = new SmallUid(smallUidString);
+console.log(uid.string); // prints the base64url encoded string
+console.log(uid.value); // prints the underlying numeric value
 ```
