@@ -1,6 +1,5 @@
 export function encode(v: bigint): string {
   const u: string = toByteString(v);
-  console.log(u);
   return btoa(u)
     .replace(/\+/g, "-")
     .replace(/\//g, "_")
@@ -8,23 +7,21 @@ export function encode(v: bigint): string {
 }
 
 export function decode(s: string): bigint {
-  // Replace both characters in one pass using regex alternation
-  const normalized = s.replace(/[-_]/g, (m) => m === "-" ? "+" : "/");
+  // Create a mapping table for faster character replacement
+  const replacementMap: {[key: string]: string} = {'-': '+', '_': '/'};
+  
+  // Fast replacement using the map
+  const normalized = s.replace(/[-_]/g, c => replacementMap[c]);
+  
   // Decode base64 to binary string
   const binaryString = atob(normalized);
-
-  // Create a Uint8Array from the binary string
-  const bytes = new Uint8Array(binaryString.length);
-  for (let i = 0; i < binaryString.length; i++) {
-    bytes[i] = binaryString.charCodeAt(i);
-  }
-
-  // Convert bytes to BigInt
+  
+  // Direct bit shifting without intermediate array allocation
   let result = 0n;
-  for (let i = 0; i < bytes.length; i++) {
-    result = (result << 8n) | BigInt(bytes[i]);
+  for (let i = 0; i < binaryString.length; i++) {
+    result = (result << 8n) | BigInt(binaryString.charCodeAt(i));
   }
-
+  
   return result;
 }
 

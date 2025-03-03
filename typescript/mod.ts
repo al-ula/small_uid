@@ -24,6 +24,7 @@ export class SmallUid {
   static #MAX: bigint = 0xFFFFFFFF_FFFFFFFFn;
   static #RIGHT20: bigint = 0xFFFFFn;
   readonly #value: bigint = 0n;
+  static #base64urlRegex = /^[A-Za-z0-9\-_]+$/;
 
   /**
    * Creates a new `SmallUid` instance.
@@ -133,18 +134,16 @@ export class SmallUid {
    * @throws Error if the given string is not a valid base64url encoded string.
    */
   #stringToValue(string: string): bigint {
-    let encoded: string;
     if (string.length < 11) {
       throw new Error(`Invalid length: ${string} - ${string.length}`);
-    } else if (string.length > 11) {
-      encoded = string.slice(0, 11);
-    } else {
-      encoded = string;
     }
-    const base64urlRegex = /^[A-Za-z0-9\-_]+$/;
-    if (!base64urlRegex.test(encoded)) {
+    
+    const encoded = string.length > 11 ? string.slice(0, 11) : string;
+    
+    if (!SmallUid.#base64urlRegex.test(encoded)) {
       throw new Error(`Invalid base64url encoded string: ${string}`);
     }
+    
     return decode(encoded);
   }
 
@@ -166,15 +165,13 @@ export class SmallUid {
     }
     const time: bigint = timestamp << 20n;
 
-    const randBitStr = random.toString(2);
-    const randBitLength = randBitStr.length;
-    if (randBitLength > 20) {
-      if (randBitLength > 64) {
-        random = (random & SmallUid.#MAX) >> 44n;
-      } else {
-        random = random >> 44n;
-      }
+    const randomBitLength = random.toString(2).length;
+
+    // If random is more than 20 bits, shift it down to fit
+    if (randomBitLength > 20) {
+      random >>= BigInt(randomBitLength - 20);
     }
+
     return time | random;
   }
 

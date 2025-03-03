@@ -1,4 +1,4 @@
-import * as assert from "@std/assert";
+import * as assert from "jsr:@std/assert";
 import { escapeUrl, SmallUid } from "./mod.ts";
 import { expect } from "jsr:@std/expect";
 
