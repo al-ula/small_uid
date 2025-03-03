@@ -15,7 +15,7 @@ and this project adheres to
   crypto.getRandomValues for random number generation.
 - Added secure generation using previous random generation algorithm.
 
-## v0.2.3 - 2025-03-03
+## v0.2.4 - 2025-03-03
 
 ### Dependencies
 
