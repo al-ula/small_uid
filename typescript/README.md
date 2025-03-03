@@ -133,6 +133,9 @@ console.log(uid.value); // prints the underlying numeric value
 ```
 
 ## Version 1.0.0 when?
-This library is considered API stable and ready for production use. There will be no breaking changes to the API except for critical issues.
 
-But I still want to implement monotonicity. The v1 release will be done when I'm finished implementing monotonicity.
+This library is considered API stable and ready for production use. There will
+be no breaking changes to the API except for critical issues.
+
+But I still want to implement monotonicity. The v1 release will be done when I'm
+finished implementing monotonicity.
