@@ -12,7 +12,7 @@ pub fn timestamp_gen() -> Result<u64, Error> {
 
 /// Generates a random number as u64
 pub fn random_gen() -> u64 {
-    rand::thread_rng().gen_range(0..(1 << 20))
+    rand::rng().random_range(0..(1 << 20))
 }
 
 /// Generates SmallUid using timestamp_gen() and random_gen()
