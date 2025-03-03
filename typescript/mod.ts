@@ -1,5 +1,5 @@
 import { decode, encode } from "./src/utils.ts";
-import { generate } from "./src/generator.ts";
+import { generate, generateSecure } from "./src/generator.ts";
 
 /**
  * The `SmallUid` class generates small, url-safe, lexicographically sortable, unique ids.
@@ -25,6 +25,7 @@ export class SmallUid {
   static #RIGHT20: bigint = 0xFFFFFn;
   readonly #value: bigint = 0n;
   static #base64urlRegex = /^[A-Za-z0-9\-_]+$/;
+  static #isSecure: "secure";
 
   /**
    * Creates a new `SmallUid` instance.
@@ -62,10 +63,18 @@ export class SmallUid {
 
   /**
    * Generates a new `SmallUid` with a random value and the current timestamp.
+   *
+   * If the `type` parameter is provided and is equal to `"secure"`, the function
+   * will use a secure random number generator to generate the random value.
+   * Otherwise, it will use a non-secure random number generator.
+   *
+   * @param type - An optional parameter that specifies the type of random number
+   * generator to use. If set to `"secure"`, a secure random number generator
+   * will be used.
    * @returns SmallUid - The new instance of `SmallUid`.
    */
-  static gen(): SmallUid {
-    const random = generate();
+  static gen(type?: "secure"): SmallUid {
+    const random = type ?? "secure" ? generateSecure() : generate();
     const timestamp = BigInt(Date.now());
     const value: bigint = this.#assemble(timestamp, random);
     return new SmallUid(value);
@@ -74,15 +83,22 @@ export class SmallUid {
   /**
    * Creates a new `SmallUid` using a specified timestamp.
    *
-   * The ID will contain the specified timestamp and a random value.
+   * If the `type` parameter is provided and is equal to `"secure"`, the function
+   * will use a secure random number generator to generate the random value.
+   * Otherwise, it will use a non-secure random number generator.
+   *
    * @param timestamp - The timestamp to use for the ID creation.
+   * @param type - An optional parameter that specifies the type of random number
+   * generator to use. If set to `"secure"`, a secure random number generator
+   * will be used.
    * @returns SmallUid - The new instance of `SmallUid`.
+   * @throws Error if the timestamp is greater than 64 bits.
    */
-  static fromTimestamp(timestamp: bigint): SmallUid {
+  static fromTimestamp(timestamp: bigint, type?: "secure"): SmallUid {
     if (timestamp.toString(2).length > 64n) {
       throw new Error("Timestamp must be less than 64 bit");
     }
-    const random = generate();
+    const random = type ?? "secure" ? generateSecure() : generate();
     const value: bigint = this.#assemble(timestamp, random);
     return new SmallUid(value);
   }
@@ -137,13 +153,13 @@ export class SmallUid {
     if (string.length < 11) {
       throw new Error(`Invalid length: ${string} - ${string.length}`);
     }
-    
+
     const encoded = string.length > 11 ? string.slice(0, 11) : string;
-    
+
     if (!SmallUid.#base64urlRegex.test(encoded)) {
       throw new Error(`Invalid base64url encoded string: ${string}`);
     }
-    
+
     return decode(encoded);
   }
 

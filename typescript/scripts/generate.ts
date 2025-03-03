@@ -1,6 +1,5 @@
 import { SmallUid } from "../mod.ts";
 
-
 const uidStringArray: string[] = [];
 
 for (let i = 0; i < 1000; i++) {

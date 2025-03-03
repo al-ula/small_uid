@@ -8,20 +8,20 @@ export function encode(v: bigint): string {
 
 export function decode(s: string): bigint {
   // Create a mapping table for faster character replacement
-  const replacementMap: {[key: string]: string} = {'-': '+', '_': '/'};
-  
+  const replacementMap: { [key: string]: string } = { "-": "+", "_": "/" };
+
   // Fast replacement using the map
-  const normalized = s.replace(/[-_]/g, c => replacementMap[c]);
-  
+  const normalized = s.replace(/[-_]/g, (c) => replacementMap[c]);
+
   // Decode base64 to binary string
   const binaryString = atob(normalized);
-  
+
   // Direct bit shifting without intermediate array allocation
   let result = 0n;
   for (let i = 0; i < binaryString.length; i++) {
     result = (result << 8n) | BigInt(binaryString.charCodeAt(i));
   }
-  
+
   return result;
 }
 
