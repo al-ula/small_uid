@@ -16,7 +16,7 @@ pub fn random_gen() -> u64 {
 }
 
 /// Generates SmallUid using timestamp_gen() and random_gen()
-pub fn gen() -> Result<SmallUid, Error> {
+pub fn generate() -> Result<SmallUid, Error> {
     let timestamp = timestamp_gen()?;
     let random = random_gen();
     Ok(assemble(timestamp, random))
@@ -25,11 +25,13 @@ pub fn gen() -> Result<SmallUid, Error> {
 /// Assembler for SmallUid
 pub fn assemble(timestamp: u64, random: u64) -> SmallUid {
     let timestamp = timestamp << 20;
+    
     let random_bits = 64 - random.leading_zeros();
-    let random = if random_bits > 44 {
-        random >> 44
+    let random = if random_bits > 20 {
+        random >> (random_bits - 20) // Ensure exactly 20 bits
     } else {
         random
     };
+
     SmallUid(timestamp | random)
 }

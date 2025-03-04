@@ -73,7 +73,7 @@ jobs:
 
   publish:
     needs: publish-test
-    if: startsWith(github.ref, 'refs/tags/') # Runs on tag pushes
+    if: startsWith(github.ref, 'refs/tags/') && endsWith(github.ref, '-js') # Runs on tag pushes with a -js suffix
     runs-on: ubuntu-latest
     defaults:
       run:

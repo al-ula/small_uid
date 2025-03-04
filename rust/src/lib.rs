@@ -6,6 +6,17 @@ pub mod checking;
 mod error;
 /// Generating timestamp and random number
 mod generation;
+
+pub use generation::timestamp_gen;
+
+mod monotonic;
+
+use monotonic::{
+    MonotonicGenerator,
+    monotonic_random_gen,
+    generate as monotonic_generate,
+};
+
 #[cfg(test)]
 mod test;
 
@@ -23,7 +34,20 @@ pub struct SmallUid(pub u64);
 impl SmallUid {
     /// Creates a new small unique identifier.
     pub fn new() -> SmallUid {
-        generation::gen().unwrap()
+        generation::generate().unwrap()
+    }
+
+    /// Creates a batch of small unique identifiers.s
+    pub fn batch_new(count: usize) -> Vec<SmallUid> {
+        let mut smalluids = Vec::new();
+        for _ in 0..count {
+            smalluids.push(generation::generate().unwrap());
+        }
+        smalluids
+    }
+
+    pub fn init_monotonic() -> MonotonicGenerator {
+        MonotonicGenerator::new()
     }
 
     /// Creates a SmallUid from the provided timestamp and random number.
@@ -106,5 +130,26 @@ impl Display for SmallUid {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let smalluid = base64_url::encode(&self.0.to_be_bytes());
         write!(f, "{}", smalluid)
+    }
+}
+
+impl monotonic::MonotonicGenerator {
+    pub fn generate(&mut self) -> SmallUid {
+        monotonic_generate(self).unwrap()
+    }
+
+    pub fn generate_batch(&mut self, count: usize) -> Vec<SmallUid> {
+        let mut smalluids = Vec::new();
+        for _ in 0..count {
+            smalluids.push(self.generate());
+        }
+        smalluids
+    }
+
+    pub fn generate_full(&mut self, timestamp: u64) -> [SmallUid; 1024] {
+        std::array::from_fn(|_| {
+            let random = monotonic_random_gen(self, timestamp).unwrap();
+            assemble(timestamp, random as u64)
+        })
     }
 }

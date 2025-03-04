@@ -11,6 +11,7 @@ pub enum SmallUidError {
     DecodeSlice(DecodeSliceError),
     VecToArray,
     InvalidChar,
+    MonotonicCounterLimit,
 }
 
 impl From<SystemTimeError> for SmallUidError {
@@ -41,6 +42,9 @@ impl std::fmt::Display for SmallUidError {
             SmallUidError::DecodeSlice(err) => err.fmt(f),
             SmallUidError::VecToArray => f.write_str("VecToArray: Failed to convert"),
             SmallUidError::InvalidChar => f.write_str("InvalidChar: Invalid character"),
+            SmallUidError::MonotonicCounterLimit => {
+                f.write_str("MonotonicCounterLimit: Monotonic counter limit reached")
+            }
         }
     }
 }
