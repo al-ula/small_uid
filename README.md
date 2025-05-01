@@ -58,12 +58,12 @@ same millisecond._
 They are internally stored as _64-bit_ integers (_44-bit_ timestamp followed by
 _20 random bits_):
 
-    Encoded       : GWjBd_OK070
-    Integer value : 1830925969457337277
+    Encoded       : GWjC6FjOngw
+    Integer value : 1830927551704243724
+     
+     11001011010001100001011101000010110001100111    01001111000001100
 
-     110010110100011000001011101111111001110    0010101101001110111101
-
-    |---------------------------------------|  |----------------------|
+    |--------------------------------------------|  |-----------------|
                     Timestamp                         Randomness
                     44 bits                            20 bits
 
