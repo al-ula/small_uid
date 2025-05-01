@@ -58,9 +58,14 @@ same millisecond._
 They are internally stored as _64-bit_ integers (_44-bit_ timestamp followed by
 _20 random bits_):
 
-    |-----------------------|  |------------|
-            Timestamp            Randomness
-             44 bits               20 bits
+    Encoded       : GWjBd_OK070
+    Integer value : 1830925969457337277
+
+     110010110100011000001011101111111001110    0010101101001110111101
+
+    |---------------------------------------|  |----------------------|
+                    Timestamp                         Randomness
+                    44 bits                            20 bits
 
 The random number suffix still guarantees a decent amount of uniqueness when
 many ids are created in the same millisecond (up to 1,048,576 different values)
@@ -84,7 +89,7 @@ This project is loose reimplementation of
 encoding for this one is base64-url instead of base62 for enabling wider
 usecases.
 
-## Example
+## Code Example
 
 ### Rust
 
