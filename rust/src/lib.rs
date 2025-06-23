@@ -11,11 +11,7 @@ pub use generation::timestamp_gen;
 
 mod monotonic;
 
-use monotonic::{
-    MonotonicGenerator,
-    monotonic_random_gen,
-    generate as monotonic_generate,
-};
+pub use monotonic::MonotonicGenerator;
 
 #[cfg(test)]
 mod test;
@@ -28,12 +24,47 @@ type Error = SmallUidError;
 #[cfg(all(not(target_arch = "wasm32"), feature = "serde"))]
 use serde::{Deserialize, Serialize};
 
+#[doc = r#"# Examples
+
+## Generate a single SmallUid
+```rust
+use small_uid::SmallUid;
+
+let id = SmallUid::new();
+println!("Generated SmallUid: {}", id);
+```
+
+## Generate a batch of SmallUids
+```rust
+use small_uid::SmallUid;
+
+let ids = SmallUid::batch_new(5);
+for id in ids {
+    println!("Batch SmallUid: {}", id);
+}
+```
+
+## Generate SmallUids using monotonic generator
+```rust
+let mut generator = SmallUid::init_monotonic();
+let id = generator.generate();
+println!("Monotonic SmallUid: {}", id);
+
+let ids = generator.generate_batch(3);
+for id in ids {
+    println!("Monotonic Batch SmallUid: {}", id);
+}
+
+let timestamp = timestamp_gen().unwrap();
+let full_id: [SmallUid; 1024] = generator.generate_full(timestamp);
+```"#]
+
 #[cfg_attr(
     all(not(target_arch = "wasm32"), feature = "serde"),
     derive(Serialize, Deserialize)
 )]
-#[derive(Hash, Debug, Clone, Copy, PartialEq, Eq, Default)]
-pub struct SmallUid(pub u64);
+#[derive(Hash, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default)]
+pub struct SmallUid(pub u64);  
 
 impl SmallUid {
     /// Creates a new small unique identifier.
@@ -41,7 +72,7 @@ impl SmallUid {
         generation::generate().unwrap()
     }
 
-    /// Creates a batch of small unique identifiers.s
+    /// Creates a batch of small unique identifiers.
     pub fn batch_new(count: usize) -> Vec<SmallUid> {
         let mut smalluids = Vec::new();
         for _ in 0..count {
@@ -50,8 +81,16 @@ impl SmallUid {
         smalluids
     }
 
+    /// Initializes a monotonic generator.
+    ///
+    /// Monotonic SmallUid replaces the first 10 bits of randomness with an increment,
+    /// giving 1024 UIDs per millisecond.
     pub fn init_monotonic() -> MonotonicGenerator {
-        MonotonicGenerator::new()
+        MonotonicGenerator {
+            last_ms: 0,
+            lower_bits: 0,
+            upper_counter: 0,
+        }
     }
 
     /// Creates a SmallUid from the provided timestamp and random number.
@@ -134,26 +173,5 @@ impl Display for SmallUid {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let smalluid = base64_url::encode(&self.0.to_be_bytes());
         write!(f, "{}", smalluid)
-    }
-}
-
-impl monotonic::MonotonicGenerator {
-    pub fn generate(&mut self) -> SmallUid {
-        monotonic_generate(self).unwrap()
-    }
-
-    pub fn generate_batch(&mut self, count: usize) -> Vec<SmallUid> {
-        let mut smalluids = Vec::new();
-        for _ in 0..count {
-            smalluids.push(self.generate());
-        }
-        smalluids
-    }
-
-    pub fn generate_full(&mut self, timestamp: u64) -> [SmallUid; 1024] {
-        std::array::from_fn(|_| {
-            let random = monotonic_random_gen(self, timestamp).unwrap();
-            assemble(timestamp, random as u64)
-        })
     }
 }

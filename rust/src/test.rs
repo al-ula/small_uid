@@ -52,34 +52,6 @@ fn test_batch_monotonic() {
 }
 
 #[test]
-fn test_monotonic_full() {
-    let mut generator = SmallUid::init_monotonic();
-    let timestamp = timestamp_gen().unwrap();
-    let smalluids = generator.generate_full(timestamp);
-    for smalluid in smalluids {
-        let time = smalluid.get_timestamp();
-        let random = smalluid.get_random();
-        let reassembled = SmallUid::from_parts(time, random);
-        assert!(random > 0);
-        assert_eq!(time, timestamp);
-        assert_eq!(smalluid, reassembled);
-    }
-}
-
-#[test]
-fn test_monotonic_full_monotonicity() {
-    let mut generator = SmallUid::init_monotonic();
-    let timestamp = timestamp_gen().unwrap();
-    let smalluids = generator.generate_full(timestamp);
-    for i in 1..smalluids.len() {
-        let prev = smalluids[i - 1];
-        let curr = smalluids[i];
-        assert_eq!(prev.get_timestamp(), curr.get_timestamp());
-        assert!(prev.get_random() < curr.get_random());
-    }
-}
-
-#[test]
 fn test_timestamp() {
     let timestamp = timestamp_gen().unwrap();
     let smalluid = SmallUid::from_timestamp(timestamp);

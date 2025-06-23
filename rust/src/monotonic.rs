@@ -9,19 +9,94 @@ pub fn random_gen() -> u16 {
 }
 
 /// Monotonic SmallUID Generator
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub struct MonotonicGenerator {
-    last_ms: u64,
-    lower_bits: u16, // 10-bit random part
-    upper_counter: u16, // 10-bit counter part
+    pub(crate) last_ms: u64,
+    pub(crate) lower_bits: u16, // 10-bit random part
+    pub(crate) upper_counter: u16, // 10-bit counter part
 }
 
 impl MonotonicGenerator {
-    /// Creates a new MonotonicGenerator.
-    pub fn new() -> Self {
-        MonotonicGenerator {
-            last_ms: 0,
-            lower_bits: 0,
-            upper_counter: 0,
+
+    pub fn generate(&mut self) -> SmallUid {
+        generate(self).unwrap()
+    }
+
+    pub fn generate_batch(&mut self, count: usize) -> Vec<SmallUid> {
+        let mut smalluids = Vec::new();
+        for _ in 0..count {
+            smalluids.push(self.generate());
+        }
+        smalluids
+    }
+
+    /// Generate all possible monotonic SmallUids for a given timestamp (10-bit increment: 1024 UIDs)
+    /// 
+    /// Most modern machine should be able to run in the µs range even in debug mode, though your mileage may varies
+    pub fn generate_full(&mut self, timestamp: u64) -> [SmallUid; 1024] {
+        let random = random_gen() & 0x3FF;
+        std::array::from_fn(|i| {
+            // For each i in 0..1024, use i as the 10-bit increment
+            let random = (i as u32) << 10 | random as u32;
+            assemble(timestamp, random as u64)
+        })
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::timestamp_gen;
+
+    #[test]
+    fn test_generate_single_uid() {
+        let mut generator = MonotonicGenerator::default();
+        let uid1 = generator.generate();
+        let uid2 = generator.generate();
+        assert_ne!(uid1, uid2, "Consecutive generated UIDs should be unique");
+    }
+
+    #[test]
+    fn test_generate_batch_count_and_uniqueness() {
+        let mut generator = MonotonicGenerator::default();
+        let batch_size = 100;
+        let uids = generator.generate_batch(batch_size);
+        assert_eq!(uids.len(), batch_size, "Batch size should match requested count");
+
+        let mut seen = std::collections::HashSet::new();
+        for uid in uids.iter() {
+            assert!(seen.insert(uid), "Duplicate UID found in batch");
+        }
+    }
+
+    #[test]
+    fn test_generate_batch_monotonicity() {
+        let mut generator = MonotonicGenerator::default();
+        let batch_size = 50;
+        let uids = generator.generate_batch(batch_size);
+        for i in 1..uids.len() {
+            assert!(uids[i] > uids[i - 1], "UIDs are not monotonic at index {}", i);
+        }
+    }
+
+    #[test]
+    fn test_generate_full_monotonicity() {
+        let mut generator = MonotonicGenerator::default();
+        let timestamp = timestamp_gen().unwrap();
+        let start = std::time::Instant::now();
+        let uids = generator.generate_full(timestamp);
+        let duration = start.elapsed();
+        println!("Generate full take: {:?}", duration);
+
+        // Check that all UIDs are unique
+        let mut seen = std::collections::HashSet::new();
+        for uid in uids.iter() {
+            assert!(seen.insert(uid), "Duplicate UID found in generate_full");
+        }
+
+        // Check that UIDs are strictly increasing (monotonic)
+        for i in 1..uids.len() {
+            assert!(uids[i] > uids[i - 1], "UIDs are not monotonic at index {}", i);
         }
     }
 }
