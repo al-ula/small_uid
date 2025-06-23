@@ -9,6 +9,8 @@
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid?ref=badge_shield&issueType=security)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid?ref=badge_shield&issueType=license)
 
+> [!Warning] I will no longer use this branch, opting to feature freeze on master instead
+
 _Small UID_ is a small, url-safe, user-friendly unique, lexicographically
 sortable id generator.
 
