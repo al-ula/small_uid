@@ -34,8 +34,8 @@ impl MonotonicGenerator {
     /// 
     /// Most modern machine should be able to run in the µs range even in debug mode, though your mileage may varies
     pub fn generate_full(&mut self, timestamp: u64) -> [SmallUid; 1024] {
-        let random = random_gen() & 0x3FF;
         std::array::from_fn(|i| {
+            let random = random_gen() & 0x3FF;
             // For each i in 0..1024, use i as the 10-bit increment
             let random = (i as u32) << 10 | random as u32;
             assemble(timestamp, random as u64)
