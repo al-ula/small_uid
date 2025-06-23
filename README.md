@@ -9,6 +9,8 @@
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid?ref=badge_shield&issueType=security)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid?ref=badge_shield&issueType=license)
 
+> [!NOTE] Guaranteed monotonicity version in alpha for rust
+
 _Small UID_ is a small, url-safe, user-friendly unique, lexicographically
 sortable id generator.
 
@@ -58,14 +60,9 @@ same millisecond._
 They are internally stored as _64-bit_ integers (_44-bit_ timestamp followed by
 _20 random bits_):
 
-    Encoded       : GWjC6FjOngw
-    Integer value : 1830927551704243724
-     
-     11001011010001100001011101000010110001100111    01001111000001100
-
-    |--------------------------------------------|  |-----------------|
-                    Timestamp                         Randomness
-                    44 bits                            20 bits
+    |-----------------------|  |------------|
+            Timestamp            Randomness
+             44 bits               20 bits
 
 The random number suffix still guarantees a decent amount of uniqueness when
 many ids are created in the same millisecond (up to 1,048,576 different values)
@@ -89,7 +86,18 @@ This project is loose reimplementation of
 encoding for this one is base64-url instead of base62 for enabling wider
 usecases.
 
-## Code Example
+### Monotonicity
+Standard Small UID, as you already read, provide monotonicity beetween millisecond.
+
+In the rust version I made a guaranteed monotonic version that replace the first 10-bit of randomness with increment value, basically capping generation to 1024/S.
+
+    |-----------------------|  |-----------|  |------------|
+            Timestamp            Increment      Randomness
+             44 bits              10 bits         10 bits
+
+Tell me if anyone want a version with only increment.
+
+## Example
 
 ### Rust
 
@@ -105,6 +113,15 @@ let smalluid2 = SmallUid::try_from("GSntNvOw6n8".to_string()).unwrap();
 ```rust
 let smalluid = SmallUid::new();
 let uid_string = smalluid.to_string();
+```
+
+#### Generating Monotonic Small UIDs
+
+```rust
+let mut generator = SmallUid::init_monotonic();
+let id = generator.generate();
+let id2 = generator.generate();
+assert!(id2 > id);
 ```
 
 ### Typescript

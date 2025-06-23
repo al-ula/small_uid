@@ -84,6 +84,17 @@ This project is loose reimplementation of
 encoding for this one is base64-url instead of base62 for enabling wider
 usecases.
 
+### Monotonicity
+Standard Small UID, as you already read, provide monotonicity beetween millisecond.
+
+In the rust version I made a guaranteed monotonic version that replace the first 10-bit of randomness with increment value, basically capping generation to 1024/S.
+
+    |-----------------------|  |-----------|  |------------|
+            Timestamp            Increment      Randomness
+             44 bits              10 bits         10 bits
+
+Tell me if anyone want a version with only increment.
+
 ## Example
 
 ### Rust
@@ -100,6 +111,15 @@ let smalluid2 = SmallUid::try_from("GSntNvOw6n8".to_string()).unwrap();
 ```rust
 let smalluid = SmallUid::new();
 let uid_string = smalluid.to_string();
+```
+
+#### Generating Monotonic Small UIDs
+
+```rust
+let mut generator = SmallUid::init_monotonic();
+let id = generator.generate();
+let id2 = generator.generate();
+assert!(id2 > id);
 ```
 
 ### Typescript
