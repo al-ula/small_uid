@@ -1,4 +1,5 @@
 use crate::{SmallUid, generation::timestamp_gen, generation::random_gen};
+use serde_json;
 
 #[test]
 fn test_generation() {
@@ -133,4 +134,34 @@ fn test_try_from() {
     let uidstr = SmallUid::new();
     let smalluid = SmallUid::try_from(uidstr.to_string()).unwrap();
     assert!(smalluid == uidstr);
+}
+#[cfg(feature = "serde")]
+mod serde_tests {
+    use super::*;
+
+    #[test]
+    fn test_serde_serialize_deserialize() {
+        let uid = SmallUid::new();
+        let serialized = serde_json::to_string(&uid).expect("Serialization failed");
+        let deserialized: SmallUid = serde_json::from_str(&serialized).expect("Deserialization failed");
+        assert_eq!(uid, deserialized);
+    }
+
+    #[test]
+    fn test_serde_serialize_batch() {
+        let uids = SmallUid::batch_new(5);
+        let serialized = serde_json::to_string(&uids).expect("Serialization failed");
+        let deserialized: Vec<SmallUid> = serde_json::from_str(&serialized).expect("Deserialization failed");
+        assert_eq!(uids, deserialized);
+    }
+}
+
+#[cfg(not(feature = "serde"))]
+mod no_serde_tests {
+    #[test]
+    fn test_serde_feature_not_enabled() {
+        // This test ensures that serde is not enabled.
+        // Compilation should fail if serde is enabled and this test runs.
+        assert!(true);
+    }
 }

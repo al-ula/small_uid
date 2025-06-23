@@ -22,13 +22,17 @@ mod test;
 
 pub use error::SmallUidError;
 use generation::assemble;
-#[cfg(not(target_arch = "wasm32"))]
-use serde::{Deserialize, Serialize};
 use std::fmt::Display;
 type Error = SmallUidError;
 
-#[cfg_attr(not(target_arch = "wasm32"), derive(Serialize, Deserialize))]
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+#[cfg(all(not(target_arch = "wasm32"), feature = "serde"))]
+use serde::{Deserialize, Serialize};
+
+#[cfg_attr(
+    all(not(target_arch = "wasm32"), feature = "serde"),
+    derive(Serialize, Deserialize)
+)]
+#[derive(Hash, Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub struct SmallUid(pub u64);
 
 impl SmallUid {
