@@ -56,11 +56,7 @@ the same millisecond._\
 same millisecond._
 
 They are internally stored as _64-bit_ integers (_44-bit_ timestamp followed by
-_20 random bits_):
-
-    |-----------------------|  |------------|
-            Timestamp            Randomness
-             44 bits               20 bits
+_20 random bits_)
 
 The random number suffix still guarantees a decent amount of uniqueness when
 many ids are created in the same millisecond (up to 1,048,576 different values)
@@ -89,10 +85,6 @@ Standard Small UID, as you already read, provide monotonicity beetween milliseco
 
 In the rust version I made a guaranteed monotonic version that replace the first 10-bit of randomness with increment value, basically capping generation to 1024/S.
 
-    |-----------------------|  |-----------|  |------------|
-            Timestamp            Increment      Randomness
-             44 bits              10 bits         10 bits
-
 Tell me if anyone want a version with only increment.
 
 ## Example
@@ -102,6 +94,8 @@ Tell me if anyone want a version with only increment.
 #### Generating Small UIDs
 
 ```rust
+use small_uid::SmallUid;
+
 let smalluid1 = SmallUid::new();
 let smalluid2 = SmallUid::try_from("GSntNvOw6n8".to_string()).unwrap();
 ```
@@ -109,6 +103,8 @@ let smalluid2 = SmallUid::try_from("GSntNvOw6n8".to_string()).unwrap();
 #### Converting Small UIDs
 
 ```rust
+use small_uid::SmallUid;
+
 let smalluid = SmallUid::new();
 let uid_string = smalluid.to_string();
 ```
@@ -116,6 +112,8 @@ let uid_string = smalluid.to_string();
 #### Generating Monotonic Small UIDs
 
 ```rust
+use small_uid::SmallUid;
+
 let mut generator = SmallUid::init_monotonic();
 let id = generator.generate();
 let id2 = generator.generate();

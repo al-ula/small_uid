@@ -46,6 +46,9 @@ for id in ids {
 
 ## Generate SmallUids using monotonic generator
 ```rust
+use small_uid::SmallUid;
+use small_uid::timestamp_gen;
+
 let mut generator = SmallUid::init_monotonic();
 let id = generator.generate();
 println!("Monotonic SmallUid: {}", id);
@@ -58,13 +61,12 @@ for id in ids {
 let timestamp = timestamp_gen().unwrap();
 let full_id: [SmallUid; 1024] = generator.generate_full(timestamp);
 ```"#]
-
 #[cfg_attr(
     all(not(target_arch = "wasm32"), feature = "serde"),
     derive(Serialize, Deserialize)
 )]
 #[derive(Hash, Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Default)]
-pub struct SmallUid(pub u64);  
+pub struct SmallUid(pub u64);
 
 impl SmallUid {
     /// Creates a new small unique identifier.

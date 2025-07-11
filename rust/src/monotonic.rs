@@ -2,22 +2,23 @@ use std::{thread::sleep, time::Duration};
 
 use rand::Rng;
 
-use crate::{generation::{assemble, timestamp_gen}, Error, SmallUid};
+use crate::{
+    Error, SmallUid,
+    generation::{assemble, timestamp_gen},
+};
 
 pub fn random_gen() -> u16 {
     rand::rng().random_range(0..(1 << 10)) // Generate a 10-bit random number
 }
 
-/// Monotonic SmallUID Generator
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
 pub struct MonotonicGenerator {
     pub(crate) last_ms: u64,
-    pub(crate) lower_bits: u16, // 10-bit random part
+    pub(crate) lower_bits: u16,    // 10-bit random part
     pub(crate) upper_counter: u16, // 10-bit counter part
 }
 
 impl MonotonicGenerator {
-
     pub fn generate(&mut self) -> SmallUid {
         generate(self).unwrap()
     }
@@ -31,7 +32,7 @@ impl MonotonicGenerator {
     }
 
     /// Generate all possible monotonic SmallUids for a given timestamp (10-bit increment: 1024 UIDs)
-    /// 
+    ///
     /// Most modern machine should be able to run in the µs range even in debug mode, though your mileage may varies
     pub fn generate_full(&mut self, timestamp: u64) -> [SmallUid; 1024] {
         std::array::from_fn(|i| {
@@ -61,7 +62,11 @@ mod tests {
         let mut generator = MonotonicGenerator::default();
         let batch_size = 100;
         let uids = generator.generate_batch(batch_size);
-        assert_eq!(uids.len(), batch_size, "Batch size should match requested count");
+        assert_eq!(
+            uids.len(),
+            batch_size,
+            "Batch size should match requested count"
+        );
 
         let mut seen = std::collections::HashSet::new();
         for uid in uids.iter() {
@@ -75,7 +80,11 @@ mod tests {
         let batch_size = 50;
         let uids = generator.generate_batch(batch_size);
         for i in 1..uids.len() {
-            assert!(uids[i] > uids[i - 1], "UIDs are not monotonic at index {}", i);
+            assert!(
+                uids[i] > uids[i - 1],
+                "UIDs are not monotonic at index {}",
+                i
+            );
         }
     }
 
@@ -96,13 +105,20 @@ mod tests {
 
         // Check that UIDs are strictly increasing (monotonic)
         for i in 1..uids.len() {
-            assert!(uids[i] > uids[i - 1], "UIDs are not monotonic at index {}", i);
+            assert!(
+                uids[i] > uids[i - 1],
+                "UIDs are not monotonic at index {}",
+                i
+            );
         }
     }
 }
 
 /// Generates a monotonic random value within 20-bit space
-pub fn monotonic_random_gen(generator: &mut MonotonicGenerator, timestamp: u64) -> Result<u32, Error> {
+pub fn monotonic_random_gen(
+    generator: &mut MonotonicGenerator,
+    timestamp: u64,
+) -> Result<u32, Error> {
     if timestamp > generator.last_ms {
         generator.last_ms = timestamp;
         generator.lower_bits = random_gen() & 0x3FF; // Get new 10-bit randomness
