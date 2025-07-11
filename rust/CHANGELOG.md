@@ -19,10 +19,32 @@ and this project adheres to
 
 ### Fixed
 
-- 
+-
 
 ## v0.2.4 - 2025-03-03
 
 ### Dependencies
 
 - Updated dependencies
+
+## v0.3.0-alpha.0
+
+### Added
+
+- Added monotonic generation
+- Implemented Hash trait
+
+### Changed
+
+- Moved serde support to own feature
+
+## v0.3.0-alpha.1
+
+### Added
+
+- Added github actions
+
+### Changed
+
+- Updated dependencies
+- Satisfy doc tests
