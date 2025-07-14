@@ -4,7 +4,7 @@ default-members = ["."]
 [package]
 name = "small_uid"
 authors = ["Isa Al-Ula"]
-version = "0.3.0-alpha.1"
+version = "0.3.0-beta.0"
 edition = "2024"
 readme = "README.md"
 description = "A 64 bit lexicographically sortable unique identifier implementation"
@@ -18,13 +18,13 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 base64-url = "3.0.0"
 rand = "0.9.1"
-web-time = "1.1.0"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 serde = { version = "1.0.219", features = ["derive"], optional = true }
 
 [target.'cfg(target_arch = "wasm32")'.dependencies]
 getrandom = { version = "0.3.3", features = ["wasm_js"] }
+web-time = "1.1.0"
 
 [target.'cfg(target_arch = "wasm32")'.dependencies.rand]
 version = "0.9.1"

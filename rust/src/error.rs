@@ -1,5 +1,10 @@
 use base64_url::base64::DecodeSliceError;
+
+#[cfg(target_arch = "wasm32")]
 use web_time::SystemTimeError;
+
+#[cfg(not(target_arch = "wasm32"))]
+use std::time::SystemTimeError;
 
 /// Errors that can occur when creating a SmallUid.
 #[derive(Debug)]
@@ -14,17 +19,17 @@ pub enum SmallUidError {
     MonotonicCounterLimit,
 }
 
-// impl From<SystemTimeError> for SmallUidError {
-//     fn from(err: SystemTimeError) -> Self {
-//         SmallUidError::SystemTime(err)
-//     }
-// }
-
 impl From<SystemTimeError> for SmallUidError {
     fn from(err: SystemTimeError) -> Self {
-        SmallUidError::SystemTime(err.into())
+        SmallUidError::SystemTime(err)
     }
 }
+
+// impl From<SystemTimeError> for SmallUidError {
+//     fn from(err: SystemTimeError) -> Self {
+//         SmallUidError::SystemTime(err.into())
+//     }
+// }
 
 impl From<DecodeSliceError> for SmallUidError {
     fn from(err: DecodeSliceError) -> Self {

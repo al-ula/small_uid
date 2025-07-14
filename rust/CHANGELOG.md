@@ -48,3 +48,9 @@ and this project adheres to
 
 - Updated dependencies
 - Satisfy doc tests
+
+## v0.3.0-beta.0
+
+### Added
+
+- Added wasm support

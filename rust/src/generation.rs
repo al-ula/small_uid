@@ -1,6 +1,11 @@
 use crate::{Error, SmallUid};
 use rand::Rng;
+
+#[cfg(target_arch = "wasm32")]
 use web_time::{SystemTime, UNIX_EPOCH};
+
+#[cfg(not(target_arch = "wasm32"))]
+use std::time::{SystemTime, UNIX_EPOCH};
 
 /// Generates a timestamp as u64
 pub fn timestamp_gen() -> Result<u64, Error> {
