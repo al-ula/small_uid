@@ -87,6 +87,16 @@ In the rust version I made a guaranteed monotonic version that replace the first
 
 Tell me if anyone want a version with only increment.
 
+## Rust
+
+### Wasm
+
+You might need to add cargo config for getrandom.
+```toml
+[target.wasm32-unknown-unknown]
+rustflags = ['--cfg', 'getrandom_backend="wasm_js"']
+```
+
 ## Example
 
 ### Rust
