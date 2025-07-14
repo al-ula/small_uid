@@ -1,9 +1,12 @@
-use crate::{SmallUid, generation::timestamp_gen, generation::random_gen};
+use crate::{SmallUid, generation::random_gen, generation::timestamp_gen};
 use serde_json;
 
 #[test]
 fn test_generation() {
+    let start = std::time::Instant::now();
     let smalluid = SmallUid::new();
+    let elapsed = start.elapsed();
+    println!("Generation took {:?}", elapsed);
     let time = smalluid.get_timestamp();
     let random = smalluid.get_random();
     let reassembled = SmallUid::from_parts(time, random);
@@ -26,7 +29,10 @@ fn test_generation_monotonic() {
 
 #[test]
 fn test_batch() {
-    let smalluids = SmallUid::batch_new(10);
+    let start = std::time::Instant::now();
+    let smalluids = SmallUid::batch_new(1024);
+    let elapsed = start.elapsed();
+    println!("Batch generation took {:?}", elapsed);
     for smalluid in smalluids {
         let time = smalluid.get_timestamp();
         let random = smalluid.get_random();
@@ -52,18 +58,44 @@ fn test_batch_monotonic() {
 }
 
 #[test]
-fn test_timestamp() {
+fn test_from_timestamp() {
     let timestamp = timestamp_gen().unwrap();
+    let start = std::time::Instant::now();
     let smalluid = SmallUid::from_timestamp(timestamp);
+    let elapsed = start.elapsed();
+    println!("Generation took {:?}", elapsed);
     assert!(smalluid.get_timestamp() == timestamp);
-
 }
 
 #[test]
-fn test_random() {
+fn test_from_random() {
     let random = random_gen();
+    let start = std::time::Instant::now();
     let smalluid = SmallUid::from_random(random);
+    let elapsed = start.elapsed();
+    println!("Generation took {:?}", elapsed);
     assert!(smalluid.get_random() == random);
+}
+
+#[test]
+fn test_random_gen() {
+    let start = std::time::Instant::now();
+    let random = random_gen();
+    let elapsed = start.elapsed();
+    println!("Generation took {:?}", elapsed);
+    assert!(random > 0);
+}
+
+#[test]
+fn test_random_gen_100() {
+    let start = std::time::Instant::now();
+    let randoms: Vec<u64> = (0..100).map(|_| random_gen()).collect();
+    let elapsed = start.elapsed();
+    println!("Generation took {:?}", elapsed);
+    assert!(randoms.len() == 100);
+    for random in randoms {
+        assert!(random > 0);
+    }
 }
 
 #[test]
@@ -115,7 +147,8 @@ mod serde_tests {
     fn test_serde_serialize_deserialize() {
         let uid = SmallUid::new();
         let serialized = serde_json::to_string(&uid).expect("Serialization failed");
-        let deserialized: SmallUid = serde_json::from_str(&serialized).expect("Deserialization failed");
+        let deserialized: SmallUid =
+            serde_json::from_str(&serialized).expect("Deserialization failed");
         assert_eq!(uid, deserialized);
     }
 
@@ -123,7 +156,8 @@ mod serde_tests {
     fn test_serde_serialize_batch() {
         let uids = SmallUid::batch_new(5);
         let serialized = serde_json::to_string(&uids).expect("Serialization failed");
-        let deserialized: Vec<SmallUid> = serde_json::from_str(&serialized).expect("Deserialization failed");
+        let deserialized: Vec<SmallUid> =
+            serde_json::from_str(&serialized).expect("Deserialization failed");
         assert_eq!(uids, deserialized);
     }
 }

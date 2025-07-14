@@ -1,5 +1,5 @@
 use base64_url::base64::DecodeSliceError;
-use std::time::SystemTimeError;
+use web_time::SystemTimeError;
 
 /// Errors that can occur when creating a SmallUid.
 #[derive(Debug)]
@@ -14,9 +14,15 @@ pub enum SmallUidError {
     MonotonicCounterLimit,
 }
 
+// impl From<SystemTimeError> for SmallUidError {
+//     fn from(err: SystemTimeError) -> Self {
+//         SmallUidError::SystemTime(err)
+//     }
+// }
+
 impl From<SystemTimeError> for SmallUidError {
     fn from(err: SystemTimeError) -> Self {
-        SmallUidError::SystemTime(err)
+        SmallUidError::SystemTime(err.into())
     }
 }
 

@@ -1,6 +1,6 @@
 use crate::{Error, SmallUid};
 use rand::Rng;
-use std::time::{SystemTime, UNIX_EPOCH};
+use web_time::{SystemTime, UNIX_EPOCH};
 
 /// Generates a timestamp as u64
 pub fn timestamp_gen() -> Result<u64, Error> {
@@ -25,7 +25,7 @@ pub fn generate() -> Result<SmallUid, Error> {
 /// Assembler for SmallUid
 pub fn assemble(timestamp: u64, random: u64) -> SmallUid {
     let timestamp = timestamp << 20;
-    
+
     let random_bits = 64 - random.leading_zeros();
     let random = if random_bits > 20 {
         random >> (random_bits - 20) // Ensure exactly 20 bits

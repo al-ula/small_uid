@@ -1,4 +1,6 @@
-
+[workspace]
+members = ["."]
+default-members = ["."]
 [package]
 name = "small_uid"
 authors = ["Isa Al-Ula"]
@@ -16,6 +18,7 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 base64-url = "3.0.0"
 rand = "0.9.1"
+web-time = "1.1.0"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
 serde = { version = "1.0.219", features = ["derive"], optional = true }
