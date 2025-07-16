@@ -97,9 +97,7 @@ You might need to add cargo config for getrandom.
 rustflags = ['--cfg', 'getrandom_backend="wasm_js"']
 ```
 
-## Example
-
-### Rust
+### Example
 
 #### Generating Small UIDs
 
@@ -129,41 +127,3 @@ let id = generator.generate();
 let id2 = generator.generate();
 assert!(id2 > id);
 ```
-
-### Typescript
-
-#### Generating Small UIDs
-
-```typescript
-import { SmallUid } from "@al-ula/small-uid";
-
-const uid = SmallUid.gen();
-console.log(uid.string); // prints the base64url encoded string
-console.log(uid.value); // prints the underlying integer value
-```
-
-#### Generating Small UIDs from a 64-bit integer
-
-```typescript
-const smallUidValue: bigint = 0x123456789abcdefn;
-const uid = new SmallUid(smallUidValue);
-console.log(uid.string); // prints the base64url encoded string
-console.log(uid.value); // prints the underlying numeric value
-```
-
-#### Generating Small UIDs from a string
-
-```typescript
-const smallUidString = "XxXxXxXxXxX";
-const uid = new SmallUid(smallUidString);
-console.log(uid.string); // prints the base64url encoded string
-console.log(uid.value); // prints the underlying numeric value
-```
-
-## Version 1.0.0 when?
-
-This library is considered API stable and ready for production use. There will
-be no breaking changes to the API except for critical issues.
-
-But I still want to implement monotonicity. The v1 release will be done when I'm
-finished implementing monotonicity.
