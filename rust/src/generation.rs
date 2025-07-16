@@ -27,16 +27,12 @@ pub fn generate() -> Result<SmallUid, Error> {
     Ok(assemble(timestamp, random))
 }
 
-/// Assembler for SmallUid
 pub fn assemble(timestamp: u64, random: u64) -> SmallUid {
     let timestamp = timestamp << 20;
 
-    let random_bits = 64 - random.leading_zeros();
-    let random = if random_bits > 20 {
-        random >> (random_bits - 20) // Ensure exactly 20 bits
-    } else {
-        random
-    };
+    // CHANGE: Using a bitmask to ensure that we only use the lower 20 bits
+    // of the random number, which matches the logic in `get_random`.
+    let random = random & 0xFFFFF;
 
     SmallUid(timestamp | random)
 }
