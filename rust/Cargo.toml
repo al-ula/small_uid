@@ -4,7 +4,7 @@ default-members = ["."]
 [package]
 name = "small_uid"
 authors = ["Isa Al-Ula"]
-version = "0.3.0-beta.0"
+version = "0.3.0"
 edition = "2024"
 readme = "README.md"
 description = "A 64 bit lexicographically sortable unique identifier implementation"

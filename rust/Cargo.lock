@@ -197,7 +197,7 @@ dependencies = [
 
 [[package]]
 name = "small_uid"
-version = "0.3.0-beta.0"
+version = "0.3.0"
 dependencies = [
  "base64-url",
  "getrandom",
