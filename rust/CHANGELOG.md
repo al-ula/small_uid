@@ -54,3 +54,10 @@ and this project adheres to
 ### Added
 
 - Added wasm support
+
+
+## v0.3.0
+
+### Changed
+- Fix mismatch between assemble() and get_random()
+- 
