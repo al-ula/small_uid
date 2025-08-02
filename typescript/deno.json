@@ -16,7 +16,9 @@
     ".npmignore",
     "package-lock.json",
     "pnpm-lock.yaml",
-    "*lock*"
+    "*lock*",
+    "!rng/*",
+    "!LICENSE*"
   ],
   "publish": {
     "exclude": []

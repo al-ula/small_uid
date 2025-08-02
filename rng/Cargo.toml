@@ -1,0 +1,37 @@
+
+[package]
+name = "small_uid_rng"
+version = "0.1.0"
+authors = ["al-ula <isaalula@proton.me>"]
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen = "0.2.100"
+
+# The `console_error_panic_hook` crate provides better debugging of panics by
+# logging them with `console.error`. This is great for development, but requires
+# all the `std::fmt` and `std::panicking` infrastructure, so isn't great for
+# code size when deploying.
+rand = "0.9.1"
+getrandom = { version = "0.3.3", features = ["wasm_js"] }
+# talc = { version = "4.4.3", default-features = false, features = [
+#     "lock_api",
+#     "allocator-api2",
+#     "counters",
+# ] }
+talc = "4.4.3"
+
+[dev-dependencies]
+wasm-bindgen-test = "0.3.50"
+console_error_panic_hook = "0.1.7"
+
+[profile.release]
+# Perform optimizations on all codegen units.
+# codegen-units = 1
+# Optimize for size.
+# opt-level = 's'
+# Enable link time optimization.
+# lto = true

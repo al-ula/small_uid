@@ -1,5 +1,6 @@
 import { decode, encode } from "./src/utils.ts";
 import { generate, generateSecure } from "./src/generator.ts";
+import { generateWasmSecure } from "./src/generator.ts";
 
 /**
  * The `SmallUid` class generates small, url-safe, lexicographically sortable, unique ids.
@@ -69,12 +70,27 @@ export class SmallUid {
    * Otherwise, it will use a non-secure random number generator.
    *
    * @param type - An optional parameter that specifies the type of random number
-   * generator to use. If set to `"secure"`, a secure random number generator
-   * will be used.
+   * generator to use. If set to `"insecure"`, a fast non-secure random number generator
+   * using Math.random() will be used.
    * @returns SmallUid - The new instance of `SmallUid`.
    */
-  static gen(type?: "secure"): SmallUid {
+  static genClassic(type?: "secure"): SmallUid {
     const random = type ?? "secure" ? generateSecure() : generate();
+    const timestamp = BigInt(Date.now());
+    const value: bigint = this.#assemble(timestamp, random);
+    return new SmallUid(value);
+  }
+
+  /**
+   * Generates a new `SmallUid` using a secure random number generator and the current timestamp.
+   *
+   * This method uses WebAssembly for generating the random value.
+   * It is recommended to use this method for secure applications where speed is also a concern.
+   *
+   * @returns SmallUid - The new instance of `SmallUid`.
+   */
+  static gen(): SmallUid {
+    const random = generateWasmSecure();
     const timestamp = BigInt(Date.now());
     const value: bigint = this.#assemble(timestamp, random);
     return new SmallUid(value);

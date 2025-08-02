@@ -12,6 +12,22 @@ Deno.test("new", () => {
 });
 
 Deno.test("generate", () => {
+  const uid = SmallUid.genClassic();
+  console.log(uid.string);
+  console.log(uid.value);
+  assertNotEquals(uid.string, "");
+  assertNotEquals(uid.value, 0n);
+});
+
+Deno.test("generate secure", () => {
+  const uid = SmallUid.genClassic("secure");
+  console.log(uid.string);
+  console.log(uid.value);
+  assertNotEquals(uid.string, "");
+  assertNotEquals(uid.value, 0n);
+});
+
+Deno.test("generate secure with WASM", () => {
   const uid = SmallUid.gen();
   console.log(uid.string);
   console.log(uid.value);
@@ -20,7 +36,7 @@ Deno.test("generate", () => {
 });
 
 Deno.test("from timestamp", () => {
-  const uid = SmallUid.gen();
+  const uid = SmallUid.genClassic();
   const uidTimestamp = uid.timestamp;
   const uid2 = SmallUid.fromTimestamp(uidTimestamp);
   const uid2Timestamp = uid2.timestamp;
@@ -28,7 +44,7 @@ Deno.test("from timestamp", () => {
 });
 
 Deno.test("from random", () => {
-  const uid = SmallUid.gen();
+  const uid = SmallUid.genClassic();
   const uidRandom = uid.random;
   const uid2 = SmallUid.fromRandom(uidRandom);
   const uid2Random = uid2.random;
@@ -39,7 +55,7 @@ Deno.test("from random", () => {
 });
 
 Deno.test("from parts", () => {
-  const uid = SmallUid.gen();
+  const uid = SmallUid.genClassic();
   const [uidTimestamp, uidRandom] = uid.disassembled;
   const uid2 = SmallUid.fromParts(uidTimestamp, uidRandom);
   const [uid2Timestamp, uid2Random] = uid2.disassembled;
@@ -48,14 +64,14 @@ Deno.test("from parts", () => {
 });
 
 Deno.test("get timestamp", () => {
-  const uid = SmallUid.gen();
+  const uid = SmallUid.genClassic();
   const timestamp = uid.timestamp;
   assertEquals(typeof timestamp, "bigint");
   assertEquals(timestamp >= 0n, true);
 });
 
 Deno.test("get random", () => {
-  const random: bigint = SmallUid.gen().random;
+  const random: bigint = SmallUid.genClassic().random;
   const uid = SmallUid.fromRandom(random);
   const uidRandom: bigint = uid.random;
   console.log("random 1:", random.toString(2));
@@ -64,7 +80,7 @@ Deno.test("get random", () => {
 });
 
 Deno.test("Disassemble", () => {
-  const uid = SmallUid.gen();
+  const uid = SmallUid.genClassic();
   const [timestamp, random] = uid.disassembled;
   console.log(timestamp);
   console.log(random);
@@ -79,7 +95,7 @@ Deno.test("Convert Base64", () => {
 });
 
 Deno.test("Create from String", () => {
-  const uid1 = SmallUid.gen();
+  const uid1 = SmallUid.genClassic();
   const string = uid1.string;
   console.log("string is: ", string);
   const uid2 = new SmallUid(string);
@@ -90,25 +106,25 @@ Deno.test("Create from String", () => {
 });
 
 Deno.test("Create from negative timestamp", () => {
-  const uid = SmallUid.gen();
+  const uid = SmallUid.genClassic();
   const timestamp: bigint = -uid.timestamp;
   expect(() => SmallUid.fromTimestamp(timestamp)).toThrow();
 });
 
 Deno.test("Create from negative random", () => {
-  const uid = SmallUid.gen();
+  const uid = SmallUid.genClassic();
   const random = -uid.random;
   expect(() => SmallUid.fromRandom(random)).toThrow();
 });
 
 Deno.test("Create from short string", () => {
-  const uid = SmallUid.gen();
+  const uid = SmallUid.genClassic();
   const string = uid.string.slice(0, 5);
   expect(() => new SmallUid(string)).toThrow();
 });
 
 Deno.test("Create from long string", () => {
-  const uid = SmallUid.gen();
+  const uid = SmallUid.genClassic();
   const string = uid.string + "a";
   const uid2 = new SmallUid(string);
   assertEquals(uid.value, uid2.value);

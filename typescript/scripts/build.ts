@@ -1,12 +1,21 @@
 import { build } from "tsup";
 
+await buildFull();
+await buildMin();
+await copyFiles([
+  ["./rng/small_uid_rng_bg.wasm", "./dist/small_uid_rng_bg.wasm"],
+  ["./rng/small_uid_rng_bg.wasm.d.ts", "./dist/small_uid_rng_bg.wasm.d.ts"],
+  ["../LICENSE-APACHE", "./LICENSE-APACHE"],
+  ["../LICENSE-MIT", "./LICENSE-MIT"],
+]);
+
 function buildFull() {
   return build({
     entry: ["mod.ts"],
     splitting: false,
     clean: true,
     target: "es2022",
-    format: ["cjs", "esm"],
+    format: ["esm"],
     platform: "neutral",
     dts: true,
   });
@@ -19,7 +28,7 @@ function buildMin() {
     },
     clean: false,
     target: "es2022",
-    format: ["cjs", "esm"],
+    format: ["esm"],
     platform: "neutral",
     dts: false,
     minify: true,
@@ -37,5 +46,12 @@ function buildMin() {
   });
 }
 
-await buildFull();
-await buildMin();
+async function copyFiles(list: [string, string][]) {
+  for (const [file, dest] of list) {
+    console.log(`Copying ${file} to ${dest}`);
+    await Deno.copyFile(file, dest).catch((err) => {
+      console.error(`Failed to copy ${file} to ${dest}:`, err);
+    });
+    console.log(`Copying successful`);
+  }
+}

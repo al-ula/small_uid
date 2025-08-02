@@ -8,6 +8,18 @@ on:
       - "*-js"
 
 jobs:
+  build-wasm:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./rng
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@nightly
+      - uses: cargo-bins/cargo-binstall@main
+
+      - run: cargo binstall -y wasm-pack
+      - run: wasm-pack build --release --no-pack --target web --out-dir ../typescript/rng
   test:
     runs-on: ubuntu-latest
     defaults:

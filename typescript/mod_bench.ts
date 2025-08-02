@@ -3,11 +3,25 @@ import { generate } from "./src/generator.ts";
 
 const random = generate();
 const timestamp = BigInt(Date.now());
-const string = SmallUid.gen().string;
+const string = SmallUid.genClassic().string;
 const invalidString = string + "=";
 
 Deno.bench({
   name: "generate",
+  fn() {
+    SmallUid.genClassic();
+  },
+});
+
+Deno.bench({
+  name: "generate secure",
+  fn() {
+    SmallUid.genClassic("secure");
+  },
+});
+
+Deno.bench({
+  name: "generate secure with WASM",
   fn() {
     SmallUid.gen();
   },
