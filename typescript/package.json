@@ -43,7 +43,7 @@
   "homepage": "https://github.com/al-ula/small_uid",
   "private": false,
   "devDependencies": {
-    "tsup": "^8.3.5",
-    "typescript": "^5.6.3"
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.2"
   }
 }
