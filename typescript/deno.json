@@ -16,21 +16,15 @@
     ".npmignore",
     "package-lock.json",
     "pnpm-lock.yaml",
-    "*lock*",
-    "!rng/*",
-    "!LICENSE*"
+    "*lock*"
   ],
-  "publish": {
-    "exclude": []
-  },
   "fmt": {
-    "exclude": [
-      "dist"
-    ]
+    "exclude": ["dist", "rng"]
   },
   "lint": {
-    "exclude": [
-      "dist"
-    ]
+    "exclude": ["dist", "rng"]
+  },
+  "publish": {
+    "exclude": ["!rng/*", "!LICENSE*"]
   }
 }
