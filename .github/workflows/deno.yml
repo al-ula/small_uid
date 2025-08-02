@@ -21,6 +21,7 @@ jobs:
       - run: cargo binstall -y wasm-pack
       - run: wasm-pack build --release --no-pack --target web --out-dir ../typescript/rng
   test:
+    needs: build-wasm
     runs-on: ubuntu-latest
     defaults:
       run:
