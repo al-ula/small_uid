@@ -5,5 +5,5 @@ test*
 deno*
 mod_*
 tsconfig.json
-LICENSE*
 pnpm-lock.yaml
+cov

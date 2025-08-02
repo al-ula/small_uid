@@ -86,7 +86,7 @@ jobs:
       - name: Install dependencies
         run: deno install
       - name: Publish package
-        run: deno publish --dry-run
+        run: deno publish --dry-run --allow-dirty
       - name: Build typescript
         run: deno task build
       - uses: actions/setup-node@v3
@@ -125,7 +125,7 @@ jobs:
       - name: Install dependencies
         run: deno install
       - name: Publish package
-        run: deno publish
+        run: deno publish --allow-dirty
       - name: Build typescript
         run: deno task build
       - uses: actions/setup-node@v3
