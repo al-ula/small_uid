@@ -1,10 +1,11 @@
 import { build } from "tsup";
+import { wasmLoader } from 'esbuild-plugin-wasm'
 
 await buildFull();
 await buildMin();
 await copyFiles([
-  ["./rng/small_uid_rng_bg.wasm", "./dist/small_uid_rng_bg.wasm"],
-  ["./rng/small_uid_rng_bg.wasm.d.ts", "./dist/small_uid_rng_bg.wasm.d.ts"],
+  // ["./rng/small_uid_rng_bg.wasm", "./dist/small_uid_rng_bg.wasm"],
+  // ["./rng/small_uid_rng_bg.wasm.d.ts", "./dist/small_uid_rng_bg.wasm.d.ts"],
   ["../LICENSE-APACHE", "./LICENSE-APACHE"],
   ["../LICENSE-MIT", "./LICENSE-MIT"],
 ]);
@@ -18,6 +19,11 @@ function buildFull() {
     format: ["esm"],
     platform: "neutral",
     dts: true,
+    esbuildPlugins: [
+      wasmLoader({
+        mode: "embedded"
+      })
+    ],
   });
 }
 
@@ -43,6 +49,11 @@ function buildMin() {
         };
       }
     },
+    esbuildPlugins: [
+      wasmLoader({
+        mode: "embedded"
+      })
+    ],
   });
 }
 

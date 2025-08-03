@@ -1,6 +1,6 @@
 {
   "name": "@al-ula/small-uid",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "exports": "./mod.ts",
   "tasks": {
     "dev": "deno test --watch mod.ts",
@@ -16,6 +16,7 @@
     ".npmignore",
     "package-lock.json",
     "pnpm-lock.yaml",
+    "node_test.js",
     "*lock*"
   ],
   "fmt": {

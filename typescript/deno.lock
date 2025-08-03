@@ -988,6 +988,7 @@
     ],
     "packageJson": {
       "dependencies": [
+        "npm:esbuild-plugin-wasm@^1.1.0",
         "npm:tsup@^8.5.0",
         "npm:typescript@^5.9.2"
       ]

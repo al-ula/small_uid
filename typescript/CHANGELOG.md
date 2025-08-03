@@ -14,3 +14,13 @@ and this project adheres to
 - Increase performance for standard generation by using Math.random() instead of
   crypto.getRandomValues for random number generation.
 - Added secure generation using previous random generation algorithm.
+
+## v0.3.0 - 2025-08-03
+
+### Added
+
+- WASM CSPRNG
+
+### Removed
+
+- CommonJs support

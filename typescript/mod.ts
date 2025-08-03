@@ -63,58 +63,75 @@ export class SmallUid {
   }
 
   /**
-   * Generates a new `SmallUid` with a random value and the current timestamp.
+   * Generates a new `SmallUid` instance using the current timestamp and a random value.
    *
-   * If the `type` parameter is provided and is equal to `"secure"`, the function
-   * will use a secure random number generator to generate the random value.
-   * Otherwise, it will use a non-secure random number generator.
+   * The generated `SmallUid` will have a timestamp based on the current time
+   * and a random value generated using the specified type of random number generator.
    *
-   * @param type - An optional parameter that specifies the type of random number
-   * generator to use. If set to `"insecure"`, a fast non-secure random number generator
-   * using Math.random() will be used.
+   * @param type - Optional parameter to specify the type of random number generator to use.
+   *               If not provided, it defaults to using the WebAssembly-based CSPRNG.
+   *               If set to "secure_fast", it uses the WebAssembly-based CSPRNG.
+   *               If set to "secure", it uses the os backed crypto.getRandomValues. The most secure but fail to meet speed requirements.
+   *               If set to "insecure", it uses Math.random().
    * @returns SmallUid - The new instance of `SmallUid`.
    */
-  static genClassic(type?: "secure"): SmallUid {
-    const random = type ?? "secure" ? generateSecure() : generate();
-    const timestamp = BigInt(Date.now());
-    const value: bigint = this.#assemble(timestamp, random);
-    return new SmallUid(value);
-  }
-
-  /**
-   * Generates a new `SmallUid` using a secure random number generator and the current timestamp.
-   *
-   * This method uses WebAssembly for generating the random value.
-   * It is recommended to use this method for secure applications where speed is also a concern.
-   *
-   * @returns SmallUid - The new instance of `SmallUid`.
-   */
-  static gen(): SmallUid {
-    const random = generateWasmSecure();
-    const timestamp = BigInt(Date.now());
-    const value: bigint = this.#assemble(timestamp, random);
-    return new SmallUid(value);
+  static gen(type?: "secure_fast" | "secure" | "insecure"): SmallUid {
+    switch (type) {
+      case "secure_fast": {
+        const random = generateWasmSecure();
+        return this.fromRandom(random);
+      }
+      case "secure": {
+        const random = generateSecure();
+        return this.fromRandom(random);
+      }
+      case "insecure": {
+        const random = generate();
+        return this.fromRandom(random);
+      }
+      default: {
+        const random = generateWasmSecure();
+        return this.fromRandom(random);
+      }
+    }
   }
 
   /**
    * Creates a new `SmallUid` using a specified timestamp.
    *
-   * If the `type` parameter is provided and is equal to `"secure"`, the function
-   * will use a secure random number generator to generate the random value.
-   * Otherwise, it will use a non-secure random number generator.
-   *
    * @param timestamp - The timestamp to use for the ID creation.
-   * @param type - An optional parameter that specifies the type of random number
-   * generator to use. If set to `"secure"`, a secure random number generator
-   * will be used.
+   * @param type - Optional parameter to specify the type of random number generator to use.
+   *               If not provided, it defaults to using the WebAssembly-based CSPRNG.
+   *               If set to "secure_fast", it uses the WebAssembly-based CSPRNG.
+   *               If set to "secure", it uses the os backed crypto.getRandomValues. The most secure but fail to meet speed requirements.
+   *               If set to "insecure", it uses Math.random().
    * @returns SmallUid - The new instance of `SmallUid`.
    * @throws Error if the timestamp is greater than 64 bits.
    */
-  static fromTimestamp(timestamp: bigint, type?: "secure"): SmallUid {
+  static fromTimestamp(timestamp: bigint, type?: "secure_fast"|"secure"|"insecure"): SmallUid {
     if (timestamp.toString(2).length > 64n) {
       throw new Error("Timestamp must be less than 64 bit");
     }
-    const random = type ?? "secure" ? generateSecure() : generate();
+    
+    let random: bigint;
+    switch (type) {
+      case "secure": {
+        random = generateSecure();
+        break;
+      }
+      case "secure_fast": {
+        random = generateWasmSecure();
+        break;
+      }
+      case "insecure": {
+        random = generate();
+        break;
+      }
+      default: {
+        random = generateWasmSecure();
+        break;
+      }
+    }
     const value: bigint = this.#assemble(timestamp, random);
     return new SmallUid(value);
   }

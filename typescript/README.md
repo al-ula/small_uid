@@ -9,12 +9,8 @@
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid.svg?type=shield&issueType=security)](https://app.fossa.com/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid?ref=badge_shield&issueType=security)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid?ref=badge_shield&issueType=license)
 
-_Small UID_ is a small, url-safe, user-friendly unique, lexicographically
+> _Small UID_ is a small, url-safe, user-friendly unique, lexicographically
 sortable id generator.
-
-UUIDs are frequently used as database _Primary Key_ in software development.
-However, they aren't the best choice mainly due to their random sorting and the
-resulting fragmentation in databases indexes.
 
 UUIDs are frequently used as database _Primary Key_ in software development.
 However, they aren't the best choice mainly due to their random sorting and the
@@ -78,43 +74,42 @@ new ids being appended to the end of the table without reshuffling existing data
 However, **sort order within the same millisecond is not guaranteed** because of
 the random bits suffix.
 
+Guaranteed monotonicity for javascript version is planned.
+
 This project is loose reimplementation of
 [Small-UID](https://github.com/Mediagone/small-uid) by
 [Mediagone](https://github.com/Mediagone) with the only difference is the string
 encoding for this one is base64-url instead of base62 for enabling wider
 usecases.
 
-## Example
+## Typescript
 
-### Rust
+> Documentation in [JSR](https://jsr.io/@al-ula/small-uid)
 
-#### Generating Small UIDs
+### Example
 
-```rust
-let smalluid1 = SmallUid::new();
-let smalluid2 = SmallUid::try_from("GSntNvOw6n8".to_string()).unwrap();
-```
-
-#### Converting Small UIDs
-
-```rust
-let smalluid = SmallUid::new();
-let uid_string = smalluid.to_string();
-```
-
-### Typescript
-
-#### Generating Small UIDs
+#### Generating Small UID
 
 ```typescript
-import { SmallUid } from "@al-ula/small-uid";
+import { SmallUid } from "small-uid";
 
 const uid = SmallUid.gen();
 console.log(uid.string); // prints the base64url encoded string
 console.log(uid.value); // prints the underlying integer value
 ```
 
-#### Generating Small UIDs from a 64-bit integer
+#### Using other RNG implementations
+
+```typescript
+// Os rng, slow but secure
+const uid = SmallUid.gen("secure");
+// CSPRNG, fast and reasonably secure. Same as default.
+const uid = SmallUid.gen("secure_fast");
+// Using Math.random(), fast but insecure
+const uid = SmallUid.gen("insecure");
+```
+
+#### Generating Small UID from a 64-bit integer
 
 ```typescript
 const smallUidValue: bigint = 0x123456789abcdefn;
@@ -123,7 +118,7 @@ console.log(uid.string); // prints the base64url encoded string
 console.log(uid.value); // prints the underlying numeric value
 ```
 
-#### Generating Small UIDs from a string
+#### Generating Small UID from a string
 
 ```typescript
 const smallUidString = "XxXxXxXxXxX";
@@ -131,11 +126,3 @@ const uid = new SmallUid(smallUidString);
 console.log(uid.string); // prints the base64url encoded string
 console.log(uid.value); // prints the underlying numeric value
 ```
-
-## Version 1.0.0 when?
-
-This library is considered API stable and ready for production use. There will
-be no breaking changes to the API except for critical issues.
-
-But I still want to implement monotonicity. The v1 release will be done when I'm
-finished implementing monotonicity.

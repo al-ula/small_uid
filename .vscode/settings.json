@@ -1,7 +1,8 @@
 {
     "rust-analyzer.cargo.features": [
-
+        
     ],
+    "rust-analyzer.check.command": "clippy",
     "deno.enablePaths": [
         "./typescript"
     ]

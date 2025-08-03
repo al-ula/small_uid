@@ -1,6 +1,6 @@
 {
   "name": "small-uid",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": "Isa Al-Ula <isaalula@proton.me>",
   "description": "Small UIDs are lexicographically sortable short (64bit) unique identifiers designed to be used as an efficient database Primary Key and a readable (11/12 characters) URL safe UID when encoded.",
   "keywords": [
@@ -15,7 +15,6 @@
   "jsdelivr": "./dist/small-uid.min.js",
   "unpkg": "./dist/small-uid.min.js",
   "browser": "./dist/small-uid.min.js",
-  "main": "./dist/mod.cjs",
   "module": "./dist/mod.js",
   "types": "./dist/mod.d.ts",
   "exports": {
@@ -23,15 +22,10 @@
       "import": {
         "types": "./dist/mod.d.ts",
         "default": "./dist/mod.js"
-      },
-      "require": {
-        "types": "./dist/mod.d.cts",
-        "default": "./dist/mod.cjs"
       }
     }
   },
-  "scripts": {
-  },
+  "scripts": {},
   "license": "(Apache-2.0 OR MIT)",
   "repository": {
     "type": "git",
@@ -43,6 +37,7 @@
   "homepage": "https://github.com/al-ula/small_uid",
   "private": false,
   "devDependencies": {
+    "esbuild-plugin-wasm": "^1.1.0",
     "tsup": "^8.5.0",
     "typescript": "^5.9.2"
   }

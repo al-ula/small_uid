@@ -1,6 +1,6 @@
-import init, { generate as generateWasm } from "../rng/small_uid_rng.js";
+import { generate as generateWasm } from "../rng/small_uid_rng.js";
 
-const initialized = await init();
+// const initialized = await init();
 
 /**
  * Generates a random 64-bit bigint value using cryptographic randomness.
@@ -18,9 +18,6 @@ export function generate(): bigint {
 
 let randPool: bigint[] = [];
 export function generateWasmSecure(): bigint {
-  if (!initialized) {
-    throw new Error("WASM module not initialized");
-  }
   if (randPool.length === 0) {
     randPool = randPool = Array.from(generateWasm(20), (v) => BigInt(v));
   }

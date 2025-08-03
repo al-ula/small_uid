@@ -1,0 +1,7 @@
+{
+    "rust-analyzer.cargo.features": [
+        "small_rng",
+        "serde"
+    ],
+    "rust-analyzer.cargo.allTargets": true
+}
