@@ -19,12 +19,12 @@ jobs:
       - uses: cargo-bins/cargo-binstall@main
 
       - run: cargo binstall -y wasm-pack
-      - run: wasm-pack build --release --no-pack --target web --out-dir ../typescript/rng
+      - run: wasm-pack build --release --no-pack --target web --o ./pkg
       - name: Use rng in artifact
         uses: actions/upload-artifact@v4
         with:
           name: rng-wasm
-          path: typescript/rng
+          path: ./pkg
   test:
     needs: build-wasm
     runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: rng-wasm
-          path: typescript/rng
+          path: ./rng
 
       # Check if the code is formatted according to Deno's default
       # formatting conventions.
@@ -82,7 +82,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: rng-wasm
-          path: typescript/rng
+          path: ./rng
       - name: Install dependencies
         run: deno install
       - name: Publish package
@@ -121,7 +121,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: rng-wasm
-          path: typescript/rng
+          path: ./rng
       - name: Install dependencies
         run: deno install
       - name: Publish package
