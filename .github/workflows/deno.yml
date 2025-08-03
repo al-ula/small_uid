@@ -19,7 +19,7 @@ jobs:
       - uses: cargo-bins/cargo-binstall@main
 
       - run: cargo binstall -y wasm-pack
-      - run: wasm-pack build --release --no-pack --target web --out-dir ../typescript/rng
+      - run: wasm-pack build --release --no-pack --out-dir ../typescript/rng
       - name: Use rng in artifact
         uses: actions/upload-artifact@v4
         with:
