@@ -108,11 +108,14 @@ export class SmallUid {
    * @returns SmallUid - The new instance of `SmallUid`.
    * @throws Error if the timestamp is greater than 64 bits.
    */
-  static fromTimestamp(timestamp: bigint, type?: "secure_fast"|"secure"|"insecure"): SmallUid {
+  static fromTimestamp(
+    timestamp: bigint,
+    type?: "secure_fast" | "secure" | "insecure",
+  ): SmallUid {
     if (timestamp.toString(2).length > 64n) {
       throw new Error("Timestamp must be less than 64 bit");
     }
-    
+
     let random: bigint;
     switch (type) {
       case "secure": {

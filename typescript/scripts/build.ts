@@ -1,5 +1,5 @@
 import { build } from "tsup";
-import { wasmLoader } from 'esbuild-plugin-wasm'
+import { wasmLoader } from "esbuild-plugin-wasm";
 
 await buildFull();
 await buildMin();
@@ -21,8 +21,8 @@ function buildFull() {
     dts: true,
     esbuildPlugins: [
       wasmLoader({
-        mode: "embedded"
-      })
+        mode: "embedded",
+      }),
     ],
   });
 }
@@ -51,8 +51,8 @@ function buildMin() {
     },
     esbuildPlugins: [
       wasmLoader({
-        mode: "embedded"
-      })
+        mode: "embedded",
+      }),
     ],
   });
 }

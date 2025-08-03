@@ -10,7 +10,7 @@
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid.svg?type=shield&issueType=license)](https://app.fossa.com/projects/git%2Bgithub.com%2Fal-ula%2Fsmall_uid?ref=badge_shield&issueType=license)
 
 > _Small UID_ is a small, url-safe, user-friendly unique, lexicographically
-sortable id generator.
+> sortable id generator.
 
 UUIDs are frequently used as database _Primary Key_ in software development.
 However, they aren't the best choice mainly due to their random sorting and the
