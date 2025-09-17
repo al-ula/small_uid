@@ -23,7 +23,7 @@
     "exclude": ["dist", "rng"]
   },
   "lint": {
-    "exclude": ["dist", "rng"]
+    "exclude": ["dist", "rng", "mod_test.ts", "mod_bench.ts"]
   },
   "publish": {
     "exclude": ["!rng/*", "!LICENSE*"]
