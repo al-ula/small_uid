@@ -1,8 +1,11 @@
 import { build } from "tsup";
 import { wasmLoader } from "esbuild-plugin-wasm";
 
-await buildFull();
-await buildMin();
+const entries = ["mod.ts", "pure.ts"]
+for (const entry in entries) {
+  await buildFull(entry);
+  await buildMin(entry);
+}
 await copyFiles([
   // ["./rng/small_uid_rng_bg.wasm", "./dist/small_uid_rng_bg.wasm"],
   // ["./rng/small_uid_rng_bg.wasm.d.ts", "./dist/small_uid_rng_bg.wasm.d.ts"],
@@ -10,9 +13,9 @@ await copyFiles([
   ["../LICENSE-MIT", "./LICENSE-MIT"],
 ]);
 
-function buildFull() {
+function buildFull(entry: string) {
   return build({
-    entry: ["mod.ts"],
+    entry: [entry],
     splitting: false,
     clean: true,
     target: "es2022",
@@ -27,10 +30,13 @@ function buildFull() {
   });
 }
 
-function buildMin() {
+function buildMin(entry: string) {
+
+  const name = entry === "mod.ts" ? "small-uid" : "small-uid-pure"
+
   return build({
     entry: {
-      "small-uid": "mod.ts",
+      [name]: entry,
     },
     clean: false,
     target: "es2022",

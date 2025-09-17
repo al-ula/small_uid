@@ -1,6 +1,5 @@
 import { decode, encode } from "./src/utils.ts";
 import { generate, generateSecure } from "./src/generator.ts";
-import { generateWasmSecure } from "./src/wasmGenerator.ts";
 
 /**
  * The `SmallUid` class generates small, url-safe, lexicographically sortable, unique ids.
@@ -75,12 +74,8 @@ export class SmallUid {
    *               If set to "insecure", it uses Math.random().
    * @returns SmallUid - The new instance of `SmallUid`.
    */
-  static gen(type?: "secure_fast" | "secure" | "insecure"): SmallUid {
+  static gen(type?: "secure" | "insecure"): SmallUid {
     switch (type) {
-      case "secure_fast": {
-        const random = generateWasmSecure();
-        return this.fromRandom(random);
-      }
       case "secure": {
         const random = generateSecure();
         return this.fromRandom(random);
@@ -90,7 +85,7 @@ export class SmallUid {
         return this.fromRandom(random);
       }
       default: {
-        const random = generateWasmSecure();
+        const random = generateSecure();
         return this.fromRandom(random);
       }
     }
@@ -122,16 +117,12 @@ export class SmallUid {
         random = generateSecure();
         break;
       }
-      case "secure_fast": {
-        random = generateWasmSecure();
-        break;
-      }
       case "insecure": {
         random = generate();
         break;
       }
       default: {
-        random = generateWasmSecure();
+        random = generateSecure();
         break;
       }
     }
