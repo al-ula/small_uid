@@ -2,8 +2,12 @@ import { build } from "tsup";
 import { wasmLoader } from "esbuild-plugin-wasm";
 
 const entries = ["mod.ts", "pure.ts"];
-// clean dist folder
-Deno.removeSync("dist", { recursive: true });
+
+// check if dist folder exists and remove it
+if (await Deno.stat("./dist").catch(() => null)) {
+  await Deno.remove("./dist", { recursive: true });
+}
+
 for (const entry of entries) {
   await buildFull(entry);
   await buildMin(entry);
