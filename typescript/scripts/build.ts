@@ -1,7 +1,7 @@
 import { build } from "tsup";
 import { wasmLoader } from "esbuild-plugin-wasm";
 
-const entries = ["mod.ts", "pure.ts"]
+const entries = ["mod.ts", "pure.ts"];
 for (const entry in entries) {
   await buildFull(entry);
   await buildMin(entry);
@@ -31,8 +31,7 @@ function buildFull(entry: string) {
 }
 
 function buildMin(entry: string) {
-
-  const name = entry === "mod.ts" ? "small-uid" : "small-uid-pure"
+  const name = entry === "mod.ts" ? "small-uid" : "small-uid-pure";
 
   return build({
     entry: {

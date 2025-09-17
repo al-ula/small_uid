@@ -1,4 +1,4 @@
-import {generate as generateWasm} from "../rng/small_uid_rng.js";
+import { generate as generateWasm } from "../rng/small_uid_rng.js";
 
 let randPool: bigint[] = [];
 export function generateWasmSecure(): bigint {

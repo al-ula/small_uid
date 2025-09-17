@@ -13,4 +13,3 @@ export function generateSecure(): bigint {
 export function generate(): bigint {
   return BigInt(Math.floor(Math.random() * (1 << 20)));
 }
-
