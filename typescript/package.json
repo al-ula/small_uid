@@ -23,6 +23,12 @@
         "types": "./dist/mod.d.ts",
         "default": "./dist/mod.js"
       }
+    },
+    "./pure": {
+      "import": {
+        "types": "./dist/pure.d.ts",
+        "default": "./dist/pure.js"
+      }
     }
   },
   "scripts": {},

@@ -2,7 +2,9 @@ import { build } from "tsup";
 import { wasmLoader } from "esbuild-plugin-wasm";
 
 const entries = ["mod.ts", "pure.ts"];
-for (const entry in entries) {
+// clean dist folder
+Deno.removeSync("dist", { recursive: true });
+for (const entry of entries) {
   await buildFull(entry);
   await buildMin(entry);
 }
@@ -17,7 +19,7 @@ function buildFull(entry: string) {
   return build({
     entry: [entry],
     splitting: false,
-    clean: true,
+    clean: false,
     target: "es2022",
     format: ["esm"],
     platform: "neutral",
