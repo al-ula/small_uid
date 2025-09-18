@@ -84,6 +84,8 @@ usecases.
 
 ## Typescript
 
+Use pure version cloudflare workers.
+
 > Documentation in [JSR](https://jsr.io/@al-ula/small-uid)
 
 ### Example
@@ -92,6 +94,7 @@ usecases.
 
 ```typescript
 import { SmallUid } from "small-uid";
+// import { SmallUid } from "small-uid/pure";
 
 const uid = SmallUid.gen();
 console.log(uid.string); // prints the base64url encoded string

@@ -1,7 +1,10 @@
 {
   "name": "@al-ula/small-uid",
   "version": "0.3.1",
-  "exports": "./mod.ts",
+  "exports": {
+    ".": "./mod.ts",
+    "./pure": "./pure.ts"
+  },
   "tasks": {
     "dev": "deno test --watch mod.ts",
     "build": "deno run -A scripts/build.ts"

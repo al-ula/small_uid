@@ -2,16 +2,7 @@ import { decode, encode } from "./src/utils.ts";
 import { generate, generateSecure } from "./src/generator.ts";
 
 /**
- * The `SmallUid` class generates small, url-safe, lexicographically sortable, unique ids.
- *
- * The generated ids are 64-bit bigint, which are base64url encoded.
- * The first 44 bits contain the timestamp with millisecond precision.
- * The remaining 20 bits are filled with a random value.
- *
- * The `SmallUid` class is immutable and its instances are safe to be used
- * as keys in objects or as identifiers in any other context.
- *
- * If you have a SmallUid encoded in Base64 use escapeUrl to convert it to Base64url
+ * Pure javcascript version of SmallUid
  *
  * @example
  * import { SmallUid } from 'jsr:@al-ula/small-uid'
@@ -68,8 +59,7 @@ export class SmallUid {
    * and a random value generated using the specified type of random number generator.
    *
    * @param type - Optional parameter to specify the type of random number generator to use.
-   *               If not provided, it defaults to using the WebAssembly-based CSPRNG.
-   *               If set to "secure_fast", it uses the WebAssembly-based CSPRNG.
+   *               If not provided, it defaults to using secure.
    *               If set to "secure", it uses the os backed crypto.getRandomValues. The most secure but fail to meet speed requirements.
    *               If set to "insecure", it uses Math.random().
    * @returns SmallUid - The new instance of `SmallUid`.
@@ -96,11 +86,9 @@ export class SmallUid {
    *
    * @param timestamp - The timestamp to use for the ID creation.
    * @param type - Optional parameter to specify the type of random number generator to use.
-   *               If not provided, it defaults to using the WebAssembly-based CSPRNG.
-   *               If set to "secure_fast", it uses the WebAssembly-based CSPRNG.
+   *               If not provided, it defaults to using secure.
    *               If set to "secure", it uses the os backed crypto.getRandomValues. The most secure but fail to meet speed requirements.
    *               If set to "insecure", it uses Math.random().
-   * @returns SmallUid - The new instance of `SmallUid`.
    * @throws Error if the timestamp is greater than 64 bits.
    */
   static fromTimestamp(
