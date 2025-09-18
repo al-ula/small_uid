@@ -1,6 +1,6 @@
 {
   "name": "small-uid",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "author": "Isa Al-Ula <isaalula@proton.me>",
   "description": "Small UIDs are lexicographically sortable short (64bit) unique identifiers designed to be used as an efficient database Primary Key and a readable (11/12 characters) URL safe UID when encoded.",
   "keywords": [
