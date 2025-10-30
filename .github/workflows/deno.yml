@@ -19,7 +19,8 @@ jobs:
       - uses: cargo-bins/cargo-binstall@main
 
       - run: cargo binstall -y wasm-pack
-      - run: wasm-pack build --release --no-pack --out-dir ../typescript/rng
+      - run: wasm-pack build --release --no-pack --out-dir ../typescript/rng --out-name rng
+      - run: wasm-pack build --release --target web --no-pack --out-dir ../typescript/rng --out-name web
       - name: Use rng in artifact
         uses: actions/upload-artifact@v4
         with:
@@ -85,6 +86,8 @@ jobs:
           path: typescript/rng
       - name: Install dependencies
         run: deno install
+      - name: Prebuild package
+        run: deno task prebuild
       - name: Publish package
         run: deno publish --dry-run --allow-dirty
       - name: Build typescript
@@ -124,6 +127,8 @@ jobs:
           path: typescript/rng
       - name: Install dependencies
         run: deno install
+      - name: Prebuild package
+        run: deno task prebuild
       - name: Publish package
         run: deno publish --allow-dirty
       - name: Build typescript

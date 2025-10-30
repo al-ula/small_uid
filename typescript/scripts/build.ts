@@ -1,7 +1,7 @@
 import { build } from "tsup";
 import { wasmLoader } from "esbuild-plugin-wasm";
 
-const entries = ["mod.ts", "pure.ts"];
+const entries = ["mod.ts", "pure.ts", "web.ts"];
 
 // check if dist folder exists and remove it
 if (await Deno.stat("./dist").catch(() => null)) {
@@ -13,8 +13,8 @@ for (const entry of entries) {
   await buildMin(entry);
 }
 await copyFiles([
-  // ["./rng/small_uid_rng_bg.wasm", "./dist/small_uid_rng_bg.wasm"],
-  // ["./rng/small_uid_rng_bg.wasm.d.ts", "./dist/small_uid_rng_bg.wasm.d.ts"],
+  ["./rng/rng_bg.wasm", "./dist/rng_bg.wasm"],
+  ["./rng/rng_bg.wasm.d.ts", "./dist/rng_bg.wasm.d.ts"],
   ["../LICENSE-APACHE", "./LICENSE-APACHE"],
   ["../LICENSE-MIT", "./LICENSE-MIT"],
 ]);

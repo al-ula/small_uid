@@ -1,5 +1,6 @@
-import { generate as generateWasm } from "../rng/rng.js";
+import init, { generate as generateWasm } from "../rng/web.js";
 
+await init();
 let randPool: bigint[] = [];
 export function generateWasmSecure(): bigint {
   if (randPool.length === 0) {

@@ -84,7 +84,7 @@ usecases.
 
 ## Typescript
 
-Use pure version cloudflare workers.
+Use web version for cloudflare workers.
 
 > Documentation in [JSR](https://jsr.io/@al-ula/small-uid)
 

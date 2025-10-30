@@ -24,3 +24,9 @@ and this project adheres to
 ### Removed
 
 - CommonJs support
+
+## v0.3.3 - 2025-10-30
+
+### Added
+
+- Cloudflare worker support through web version
