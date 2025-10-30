@@ -7,7 +7,7 @@
     "./web": "./web.ts"
   },
   "tasks": {
-    "prebuild": "deno run -A scripts/wasm_post_build.ts && deno run -A scripts/generate_web.ts",
+    "prebuild": "deno run -A scripts/wasm_post_build.ts ./rng/  && deno run -A scripts/generate_web.ts mod.ts",
     "dev": "deno test --watch mod.ts",
     "build": "deno run -A scripts/build.ts"
   },
