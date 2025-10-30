@@ -44,6 +44,9 @@ jobs:
           name: rng-wasm
           path: typescript/rng
 
+
+      - run: deno task prebuild
+
       # Check if the code is formatted according to Deno's default
       # formatting conventions.
       - run: deno fmt --check
