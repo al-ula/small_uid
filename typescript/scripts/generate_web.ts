@@ -14,14 +14,21 @@ try {
 console.info("reading the file");
 const targetFile = await Deno.readTextFile(Deno.args[0]);
 
+const excerpt = await Deno.readTextFile("./scripts/web.excerpt.ts");
+
 console.info("checking if the file contain wasmGenerator.ts");
 if (targetFile.includes("wasmGenerator.ts")) {
   console.info("replacing wasmGenerator.ts with wasmGeneratorWeb.ts");
-  targetFile.replace("wasmGenerator.ts", "wasmGeneratorWeb.ts");
 
   console.info("writing web.ts");
   try {
-    await Deno.writeTextFile("web.ts", targetFile);
+    await Deno.writeTextFile(
+      "web.ts",
+      targetFile.replace(
+        `import { generateWasmSecure } from "./src/wasmGenerator.ts";`,
+        `import { generateWasmSecure } from "./src/wasmGeneratorWeb.ts";\n${excerpt}`,
+      ),
+    );
   } catch (e) {
     console.error(e);
     Deno.exit(1);

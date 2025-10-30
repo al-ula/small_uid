@@ -1,10 +1,13 @@
-import init, { generate as generateWasm } from "../rng/web.js";
+import { generate } from "../rng/web.js";
 
-await init();
 let randPool: bigint[] = [];
 export function generateWasmSecure(): bigint {
   if (randPool.length === 0) {
-    randPool = randPool = Array.from(generateWasm(20), (v) => BigInt(v));
+    // Assuming generateWasm returns an array of numbers or strings
+    randPool = Array.from(
+      generate(20),
+      (v: unknown) => BigInt(v as string | number),
+    );
   }
 
   const randomValue = randPool.pop();

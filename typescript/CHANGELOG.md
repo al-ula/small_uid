@@ -30,3 +30,10 @@ and this project adheres to
 ### Added
 
 - Cloudflare worker support through web version
+
+## v0.3.4 - 2025-10-30
+
+### Changed
+
+- Clarifying usability on Cloudflare Workers
+- Web version need to be manually initialized
